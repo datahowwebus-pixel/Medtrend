@@ -1,0 +1,6 @@
+{
+  "name": "Medtrend Surgical & Medical Instruments",
+  "description": "Premium surgical and medical instruments brand crafted in Sialkot for healthcare professionals, hospitals, distributors, and global OEM partners.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
