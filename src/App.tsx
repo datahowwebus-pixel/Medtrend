@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Product, HeroSlide, CartItem } from './types';
 import { DEFAULT_HERO_SLIDES } from './data/brandData';
 import { PRODUCTS } from './data/productsData';
+import { CompanyProvider, useCompany } from './context/CompanyContext';
 
-// Modals
+// Modals & Controls
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { QuickViewModal } from './components/QuickViewModal';
@@ -11,6 +12,9 @@ import { DataSheetModal } from './components/DataSheetModal';
 import { RFQModal } from './components/RFQModal';
 import { FolderStructureModal } from './components/FolderStructureModal';
 import { ImageManagerModal } from './components/ImageManagerModal';
+import { DeveloperModeModal } from './components/DeveloperModeModal';
+import { CartDrawer } from './components/CartDrawer';
+import { Settings } from 'lucide-react';
 
 // Dedicated Separate Modular Pages
 import { HomePage } from './pages/HomePage';
@@ -25,7 +29,8 @@ import { CartCheckoutPage } from './pages/CartCheckoutPage';
 import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { BrandGuidelinesPage } from './pages/BrandGuidelinesPage';
 
-export default function App() {
+function AppContent() {
+  const { setIsDevModalOpen } = useCompany();
   // Navigation Routing State
   const [activeTab, setActiveTab] = useState<string>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -42,6 +47,7 @@ export default function App() {
   const [isRFQOpen, setIsRFQOpen] = useState<boolean>(false);
   const [isFolderGuideOpen, setIsFolderGuideOpen] = useState<boolean>(false);
   const [isImageManagerOpen, setIsImageManagerOpen] = useState<boolean>(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState<boolean>(false);
 
   // E-Commerce Shopping Cart State with localStorage backing
   const [cart, setCart] = useState<CartItem[]>(() => {
@@ -112,6 +118,7 @@ export default function App() {
       };
       return [...prev, newItem];
     });
+    setIsCartDrawerOpen(true);
   };
 
   const handleUpdateCartQuantity = (id: string, quantity: number) => {
@@ -148,14 +155,16 @@ export default function App() {
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#F8FCFE] text-[#0B2838] flex flex-col font-sans selection:bg-[#B3E5FC] selection:text-[#01579B]">
-      {/* Top Main Navigation */}
+    <div className="min-h-screen bg-[#f8fbfe] text-[#195aa7] flex flex-col font-sans selection:bg-[#1ab8ec]/30 selection:text-[#195aa7]">
+      
+      {/* Top Main Navigation (Duckworth & Kent + GerMedUSA style) */}
       <Navbar
         activeTab={activeTab}
         cartCount={totalCartCount}
         onNavigate={handleNavigate}
         onOpenFolderGuide={() => setIsFolderGuideOpen(true)}
         onOpenImageManager={() => setIsImageManagerOpen(true)}
+        onOpenCart={() => setIsCartDrawerOpen(true)}
         onOpenRFQ={() => handleOpenRFQ()}
       />
 
@@ -170,6 +179,9 @@ export default function App() {
             onOpenFolderGuide={() => setIsFolderGuideOpen(true)}
             onOpenImageManager={() => setIsImageManagerOpen(true)}
             onOpen3DStudio={handleOpen3DStudio}
+            onAddToCart={handleAddToCart}
+            onOpenCart={() => setIsCartDrawerOpen(true)}
+            onNavigateToCheckout={() => handleNavigate('cart-checkout')}
           />
         )}
 
@@ -183,6 +195,8 @@ export default function App() {
             onAddToCart={handleAddToCart}
             onOpen3DStudio={handleOpen3DStudio}
             onOpenFolderGuide={() => setIsFolderGuideOpen(true)}
+            onOpenCart={() => setIsCartDrawerOpen(true)}
+            onNavigateToCheckout={() => handleNavigate('cart-checkout')}
           />
         )}
 
@@ -195,6 +209,8 @@ export default function App() {
             onOpenRFQ={(p) => handleOpenRFQ(p)}
             onOpenDataSheet={(p) => setDataSheetProduct(p)}
             onOpen3DStudio={handleOpen3DStudio}
+            onOpenCart={() => setIsCartDrawerOpen(true)}
+            onNavigateToCheckout={() => handleNavigate('cart-checkout')}
           />
         )}
 
@@ -212,9 +228,17 @@ export default function App() {
         )}
 
         {activeTab === 'b2b-wholesale' && (
-          <B2BWholesalePage
-            onOpenRFQ={() => handleOpenRFQ()}
-            onNavigateToProducts={() => handleNavigate('products')}
+          <ProductsPage
+            initialCategorySlug={selectedCategorySlug}
+            onNavigateToDetail={(id) => handleNavigate('product-detail', id)}
+            onOpenQuickView={(p) => setQuickViewProduct(p)}
+            onOpenRFQ={(p) => handleOpenRFQ(p)}
+            onOpenDataSheet={(p) => setDataSheetProduct(p)}
+            onAddToCart={handleAddToCart}
+            onOpen3DStudio={handleOpen3DStudio}
+            onOpenFolderGuide={() => setIsFolderGuideOpen(true)}
+            onOpenCart={() => setIsCartDrawerOpen(true)}
+            onNavigateToCheckout={() => handleNavigate('cart-checkout')}
           />
         )}
 
@@ -273,7 +297,33 @@ export default function App() {
         onOpenRFQ={() => handleOpenRFQ()}
       />
 
+      {/* Floating Developer Mode Quick Trigger */}
+      <button
+        onClick={() => setIsDevModalOpen(true)}
+        className="fixed bottom-5 right-5 z-40 bg-[#eb5d0b] hover:bg-[#d65106] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center gap-2 font-mono font-bold text-xs border-2 border-white ring-4 ring-[#eb5d0b]/30 group"
+        title="Developer Mode: Edit company name, phones, emails & addresses across the entire site"
+      >
+        <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+        <span className="hidden sm:inline pr-1">Dev Mode Info</span>
+      </button>
+
       {/* MODALS */}
+      {/* 0. Developer Mode Info Synchronizer Modal */}
+      <DeveloperModeModal />
+
+      {/* 0.1 Slide-over Cart Drawer */}
+      <CartDrawer
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
+        cartItems={cart}
+        onUpdateQuantity={handleUpdateCartQuantity}
+        onRemoveItem={handleRemoveCartItem}
+        onCheckout={() => {
+          setIsCartDrawerOpen(false);
+          handleNavigate('cart-checkout');
+        }}
+      />
+
       {/* 1. Quick View Modal */}
       {quickViewProduct && (
         <QuickViewModal
@@ -285,10 +335,6 @@ export default function App() {
             handleNavigate('product-detail', id);
           }}
           onAddToCart={handleAddToCart}
-          onOpenRFQ={(p) => {
-            setQuickViewProduct(null);
-            handleOpenRFQ(p);
-          }}
           onOpenDataSheet={(p) => {
             setQuickViewProduct(null);
             setDataSheetProduct(p);
@@ -296,6 +342,11 @@ export default function App() {
           onOpen3DStudio={(p) => {
             setQuickViewProduct(null);
             handleOpen3DStudio(p);
+          }}
+          onOpenCart={() => setIsCartDrawerOpen(true)}
+          onNavigateToCheckout={() => {
+            setQuickViewProduct(null);
+            handleNavigate('cart-checkout');
           }}
         />
       )}
@@ -335,5 +386,13 @@ export default function App() {
         onUpdateSlide={handleUpdateHeroSlides}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <CompanyProvider>
+      <AppContent />
+    </CompanyProvider>
   );
 }

@@ -40,6 +40,7 @@ export interface Product {
   isBestSeller?: boolean;
   isNew?: boolean;
   isFeatured?: boolean;
+  isTitanium?: boolean;
 }
 
 export interface CategoryTree {

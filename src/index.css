@@ -1,85 +1,79 @@
 @import "tailwindcss";
 
 @theme {
-  --color-med-bg: #F0F9FF;
-  --color-med-50: #F0F9FF;
-  --color-med-100: #E1F5FE;
-  --color-med-200: #B3E5FC;
-  --color-med-300: #81D4FA;
-  --color-med-400: #4FC3F7;
-  --color-med-500: #29B6F6;
-  --color-med-600: #0288D1;
-  --color-med-700: #0277BD;
-  --color-med-800: #01579B;
-  --color-med-900: #0B2838;
+  --color-christine: #eb5d0b;
+  --color-christine-dark: #d65106;
+  --color-christine-light: #ff7528;
+  
+  --color-eastern-blue: #1ab8ec;
+  --color-eastern-blue-dark: #0ea1d4;
+  --color-eastern-blue-light: #52cbf2;
+  --color-eastern-blue-tint: #e8f8fd;
+
+  --color-fun-blue: #195aa7;
+  --color-fun-blue-dark: #12437e;
+  --color-fun-blue-light: #2173d1;
+  --color-fun-blue-navy: #0d284a;
+
+  --color-sterile-white: #ffffff;
+  --color-clinical-surface: #f4f8fc;
+  --color-clinical-border: #d4e7f5;
 }
 
 @layer base {
   :root {
-    --bg-primary: #FFFFFF;
-    --bg-surface: #F4FAFD;
-    --bg-tint: #E1F5FE;
-    --text-primary: #0B2838;
-    --text-secondary: #355C75;
-    --text-muted: #62879F;
-    --border-color: #B3E5FC;
-    --border-accent: #81D4FA;
-    --brand-cyan: #4FC3F7;
-    --brand-blue: #29B6F6;
-    --brand-primary: #0288D1;
-    --brand-dark: #01579B;
+    --bg-primary: #ffffff;
+    --bg-surface: #f4f8fc;
+    --text-fun-blue: #195aa7;
+    --text-christine: #eb5d0b;
+    --text-eastern-blue: #1ab8ec;
   }
 
-  /* Keep light theme as the absolute universal default */
   body {
-    background-color: #FFFFFF;
-    color: #0B2838;
+    background-color: #f8fbfe;
+    color: #195aa7;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, .font-display {
     letter-spacing: -0.02em;
-    color: #0B2838;
+    color: #195aa7;
   }
 
-  .font-mono-code, .font-mono {
+  .font-mono {
     font-family: 'SF Mono', 'Fira Code', 'Courier New', Courier, monospace;
   }
 }
 
-/* Specific Custom Utility Classes based on User Palette */
-.bg-med-palette-1 { background-color: #B3E5FC; }
-.bg-med-palette-2 { background-color: #81D4FA; }
-.bg-med-palette-3 { background-color: #4FC3F7; }
-.bg-med-palette-4 { background-color: #29B6F6; }
-.bg-med-palette-5 { background-color: #0288D1; }
+/* Precise Palette Helper Classes matching user image */
+.bg-christine { background-color: #eb5d0b; }
+.bg-eastern-blue { background-color: #1ab8ec; }
+.bg-fun-blue { background-color: #195aa7; }
+.bg-sterile-white { background-color: #ffffff; }
 
-.text-med-palette-1 { color: #B3E5FC; }
-.text-med-palette-2 { color: #81D4FA; }
-.text-med-palette-3 { color: #4FC3F7; }
-.text-med-palette-4 { color: #29B6F6; }
-.text-med-palette-5 { color: #0288D1; }
-.text-med-navy { color: #0B2838; }
+.text-christine { color: #eb5d0b; }
+.text-eastern-blue { color: #1ab8ec; }
+.text-fun-blue { color: #195aa7; }
+.text-sterile-white { color: #ffffff; }
 
-.border-med-palette-1 { border-color: #B3E5FC; }
-.border-med-palette-2 { border-color: #81D4FA; }
-.border-med-palette-3 { border-color: #4FC3F7; }
-.border-med-palette-4 { border-color: #29B6F6; }
-.border-med-palette-5 { border-color: #0288D1; }
+.border-christine { border-color: #eb5d0b; }
+.border-eastern-blue { border-color: #1ab8ec; }
+.border-fun-blue { border-color: #195aa7; }
+.border-sterile-white { border-color: #ffffff; }
 
-/* Medical Clinical Scrollbar */
+/* Duckworth & Kent / GerMedUSA Clinical Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #F0F9FF;
+  background: #f4f8fc;
 }
 ::-webkit-scrollbar-thumb {
-  background: #81D4FA;
+  background: #1ab8ec;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0288D1;
+  background: #195aa7;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Search, Filter, Grid, List, Sparkles, FileText, 
-  ShoppingBag, Eye, Check, ChevronRight, Folder, RefreshCw, Layers 
+  ShoppingBag, Eye, Check, ChevronRight, Folder, RefreshCw, Layers, CheckCircle2, RotateCw, Truck
 } from 'lucide-react';
 import { Product } from '../types';
 import { CATEGORIES_TREE, PRODUCTS } from '../data/productsData';
@@ -10,22 +10,25 @@ interface ProductsPageProps {
   initialCategorySlug?: string;
   onNavigateToDetail: (productId: string) => void;
   onOpenQuickView: (product: Product) => void;
-  onOpenRFQ: (product: Product) => void;
+  onOpenRFQ?: (product: Product) => void;
   onOpenDataSheet: (product: Product) => void;
   onAddToCart: (product: Product, finish: string, quantity: number) => void;
   onOpen3DStudio: (product: Product) => void;
   onOpenFolderGuide: () => void;
+  onOpenCart?: () => void;
+  onNavigateToCheckout?: () => void;
 }
 
 export const ProductsPage: React.FC<ProductsPageProps> = ({
   initialCategorySlug,
   onNavigateToDetail,
   onOpenQuickView,
-  onOpenRFQ,
   onOpenDataSheet,
   onAddToCart,
   onOpen3DStudio,
-  onOpenFolderGuide
+  onOpenFolderGuide,
+  onOpenCart,
+  onNavigateToCheckout
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategorySlug || 'all');
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
@@ -34,6 +37,7 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
   const [only3D, setOnly3D] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'code'>('featured');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [addedToastId, setAddedToastId] = useState<string | null>(null);
 
   // Filter products
   const filteredProducts = useMemo(() => {
@@ -89,49 +93,65 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
 
   const activeCategoryObj = CATEGORIES_TREE.find(c => c.slug === selectedCategory);
 
+  const handleAddToCart = (product: Product, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    onAddToCart(product, product.availableFinishes[0] || 'Satin Matte', 1);
+    setAddedToastId(product.id);
+    setTimeout(() => setAddedToastId(null), 2500);
+    if (onOpenCart) {
+      onOpenCart();
+    }
+  };
+
+  const handleQuickBuy = (product: Product, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    onAddToCart(product, product.availableFinishes[0] || 'Satin Matte', 1);
+    if (onNavigateToCheckout) {
+      onNavigateToCheckout();
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-24 bg-white text-[#0B2838]">
-      {/* Header & Folder Breadcrumb */}
-      <div className="bg-[#E1F5FE] text-[#0B2838] rounded-2xl p-6 sm:p-8 border border-[#81D4FA] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#0288D1]">
-            <Folder className="w-3.5 h-3.5 text-[#0288D1]" />
-            <span>Root: public/images/products/Our Products/</span>
-            {activeCategoryObj && (
-              <>
-                <span className="text-[#355C75]">/</span>
-                <span className="text-[#0B2838] font-bold">{activeCategoryObj.name}</span>
-              </>
-            )}
+    <div className="max-w-[1480px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-16 py-10 space-y-10 pb-28 bg-[#f8fbfe] text-[#195aa7]">
+      
+      {/* Header & Breadcrumbs */}
+      <div className="bg-white rounded-3xl p-8 sm:p-10 border-2 border-[#1ab8ec]/30 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#eb5d0b] font-bold">
+            <ShoppingBag className="w-4 h-4 text-[#eb5d0b]" />
+            <span>Direct Clinical Store</span>
+            <span className="text-gray-300">/</span>
+            <span className="text-[#195aa7]">{activeCategoryObj ? activeCategoryObj.name : 'All Precision Instruments'}</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0B2838]">
-            {activeCategoryObj ? activeCategoryObj.name : 'All Surgical & Medical Instruments'}
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-[#195aa7]">
+            {activeCategoryObj ? activeCategoryObj.name : 'Shop Surgical & Medical Instruments'}
           </h1>
-          <p className="text-xs sm:text-sm text-[#355C75] max-w-2xl">
-            Browse our complete catalog of German-forged surgical instruments manufactured in Sialkot, Pakistan. Both single-unit retail orders and volume institutional container supplies.
+          <p className="text-sm text-gray-600 max-w-3xl leading-relaxed">
+            Order single instruments or clinic sets online with verified German DIN steel metallurgy, instant dispatch via DHL Express, and 30-day clinical satisfaction guarantees.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           <button
             onClick={onOpenFolderGuide}
-            className="px-4 py-2.5 rounded-xl bg-white hover:bg-[#F0F9FF] text-xs font-mono text-[#0288D1] border border-[#81D4FA] transition-colors flex items-center gap-2 font-bold shadow-xs"
+            className="px-5 py-3 rounded-xl bg-[#f4f8fc] hover:bg-[#1ab8ec]/15 text-xs font-mono text-[#195aa7] border border-[#195aa7]/20 transition-all flex items-center gap-2 font-bold shadow-xs"
           >
-            <Folder className="w-3.5 h-3.5 text-[#0288D1]" />
-            <span>Folder Structure Guide</span>
+            <Folder className="w-4 h-4 text-[#1ab8ec]" />
+            <span>Asset Directory Guide</span>
           </button>
         </div>
       </div>
 
       {/* Main Catalog Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        
         {/* Left Sidebar Filters */}
-        <div className="lg:col-span-3 space-y-6 bg-white p-5 rounded-2xl border border-[#B3E5FC] shadow-sm">
-          <div className="flex items-center justify-between border-b border-[#B3E5FC] pb-3">
-            <div className="flex items-center gap-2 text-xs font-bold font-mono uppercase tracking-wider text-[#0B2838]">
-              <Filter className="w-4 h-4 text-[#0288D1]" />
-              <span>Catalog Filters</span>
+        <div className="lg:col-span-3 space-y-6 bg-white p-6 sm:p-7 rounded-3xl border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-2 text-xs font-black font-mono uppercase tracking-wider text-[#195aa7]">
+              <Filter className="w-4 h-4 text-[#eb5d0b]" />
+              <span>Store Filters</span>
             </div>
             <button
               onClick={() => {
@@ -140,159 +160,176 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 setSearchQuery('');
                 setSelectedFinish('all');
                 setOnly3D(false);
+                setSortBy('featured');
               }}
-              className="text-[11px] font-mono text-[#355C75] hover:text-[#0288D1] flex items-center gap-1"
+              className="text-[11px] font-mono text-gray-400 hover:text-[#eb5d0b] transition-colors"
             >
-              <RefreshCw className="w-3 h-3" /> Reset
+              Reset All
             </button>
           </div>
 
-          {/* Main Category Selector */}
+          {/* Search Input */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold text-[#355C75] font-mono uppercase tracking-wider">
-              Main Category (Folder)
+            <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#195aa7]">
+              Search SKU / Name
             </label>
-            <div className="space-y-1 font-mono">
+            <div className="relative">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="e.g. MT-HF-001, Kelly, TC..."
+                className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-gray-200 bg-[#f8fbfe] focus:bg-white text-[#195aa7] font-medium focus:border-[#195aa7] focus:outline-none transition-colors"
+              />
+            </div>
+          </div>
+
+          {/* Categories list */}
+          <div className="space-y-2">
+            <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#195aa7]">
+              Surgical Departments
+            </label>
+            <div className="space-y-1 font-mono text-xs">
               <button
                 onClick={() => {
                   setSelectedCategory('all');
                   setSelectedSubCategory('all');
                 }}
-                className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center justify-between ${
+                className={`w-full text-left px-3 py-2 rounded-xl transition-colors flex items-center justify-between ${
                   selectedCategory === 'all'
-                    ? 'bg-[#0288D1] text-white font-bold shadow-sm'
-                    : 'text-[#355C75] hover:bg-[#F4FAFD] hover:text-[#0B2838]'
+                    ? 'bg-[#195aa7] text-white font-bold'
+                    : 'text-gray-700 hover:bg-[#f4f8fc]'
                 }`}
               >
-                <span>All Categories</span>
-                <span className="text-[10px] opacity-80">({PRODUCTS.length})</span>
+                <span>All Departments</span>
+                <span className="text-[10px] opacity-75">{PRODUCTS.length}</span>
               </button>
 
               {CATEGORIES_TREE.map((cat) => {
                 const count = PRODUCTS.filter(p => p.category === cat.name).length;
+                const isSelected = selectedCategory === cat.slug;
                 return (
-                  <button
-                    key={cat.slug}
-                    onClick={() => {
-                      setSelectedCategory(cat.slug);
-                      setSelectedSubCategory('all');
-                    }}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-colors flex items-center justify-between ${
-                      selectedCategory === cat.slug
-                        ? 'bg-[#0288D1] text-white font-bold shadow-sm'
-                        : 'text-[#355C75] hover:bg-[#F4FAFD] hover:text-[#0B2838]'
-                    }`}
-                  >
-                    <span>{cat.name}</span>
-                    <span className={`text-[10px] ${selectedCategory === cat.slug ? 'text-white/80' : 'text-[#355C75]'}`}>({count})</span>
-                  </button>
+                  <div key={cat.slug} className="space-y-0.5">
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(cat.slug);
+                        setSelectedSubCategory('all');
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-xl transition-colors flex items-center justify-between ${
+                        isSelected
+                          ? 'bg-[#195aa7] text-white font-bold'
+                          : 'text-gray-700 hover:bg-[#f4f8fc]'
+                      }`}
+                    >
+                      <span className="truncate pr-2">{cat.name}</span>
+                      <span className="text-[10px] opacity-75">{count}</span>
+                    </button>
+
+                    {/* Subcategories */}
+                    {isSelected && (
+                      <div className="pl-4 py-1 space-y-0.5 border-l-2 border-[#1ab8ec] ml-2">
+                        {cat.subCategories.map((sub) => (
+                          <button
+                            key={sub.slug}
+                            onClick={() => setSelectedSubCategory(sub.slug)}
+                            className={`w-full text-left px-2 py-1 rounded-lg text-[11px] transition-colors ${
+                              selectedSubCategory === sub.slug
+                                ? 'text-[#eb5d0b] font-bold bg-[#eb5d0b]/10'
+                                : 'text-gray-500 hover:text-[#195aa7]'
+                            }`}
+                          >
+                            {sub.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Sub-Category Selector (if a category is active) */}
-          {activeCategoryObj && (
-            <div className="space-y-2 pt-2 border-t border-[#B3E5FC]">
-              <label className="block text-xs font-bold text-[#355C75] font-mono uppercase tracking-wider">
-                Sub-Folder Group
-              </label>
-              <div className="space-y-1 pl-2 border-l-2 border-[#0288D1] font-mono">
+          {/* Finish & Metallurgy Selector */}
+          <div className="space-y-2 pt-2 border-t border-gray-100">
+            <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#195aa7]">
+              Metallurgy / Finish
+            </label>
+            <div className="grid grid-cols-2 gap-1.5 font-mono text-xs">
+              {['all', 'Satin Matte', 'Mirror Polish', 'Tungsten Carbide', 'Titanium Blue'].map((fin) => (
                 <button
-                  onClick={() => setSelectedSubCategory('all')}
-                  className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs ${
-                    selectedSubCategory === 'all' ? 'text-[#0288D1] font-bold bg-[#E1F5FE]' : 'text-[#355C75] hover:text-[#0B2838]'
+                  key={fin}
+                  onClick={() => setSelectedFinish(fin)}
+                  className={`p-2 rounded-xl text-left truncate text-[11px] border transition-all ${
+                    selectedFinish === fin
+                      ? 'bg-[#195aa7] text-white border-[#195aa7] font-bold'
+                      : 'bg-[#f8fbfe] text-gray-700 border-gray-200 hover:border-[#1ab8ec]'
                   }`}
                 >
-                  • All {activeCategoryObj.name}
+                  {fin === 'all' ? 'All Finishes' : fin}
                 </button>
-                {activeCategoryObj.subCategories.map((sub) => (
-                  <button
-                    key={sub.slug}
-                    onClick={() => setSelectedSubCategory(sub.slug)}
-                    className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs ${
-                      selectedSubCategory === sub.slug ? 'text-[#0288D1] font-bold bg-[#E1F5FE]' : 'text-[#355C75] hover:text-[#0B2838]'
-                    }`}
-                  >
-                    • {sub.name}
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
-          )}
-
-          {/* Surface Metallurgy / Finish */}
-          <div className="space-y-2 pt-3 border-t border-[#B3E5FC]">
-            <label className="block text-xs font-bold text-[#355C75] font-mono uppercase tracking-wider">
-              Surface Metallurgy
-            </label>
-            <select
-              value={selectedFinish}
-              onChange={(e) => setSelectedFinish(e.target.value)}
-              className="w-full p-2 text-xs rounded-xl border border-[#B3E5FC] bg-white text-[#0B2838] font-mono focus:border-[#0288D1] focus:outline-none"
-            >
-              <option value="all">All Finishes</option>
-              <option value="Satin Matte">German Satin Matte</option>
-              <option value="Mirror Polish">High-Gloss Mirror</option>
-              <option value="Tungsten Carbide Gold">Tungsten Carbide (TC Gold)</option>
-              <option value="Blue Titanium">Blue Titanium Nitride</option>
-              <option value="Black Ceramic">Tactical Black Ceramic</option>
-            </select>
           </div>
 
-          {/* 3D Model Toggle */}
-          <div className="pt-3 border-t border-[#B3E5FC]">
-            <label className="flex items-center gap-2.5 cursor-pointer">
+          {/* 3D Model Filter */}
+          <div className="pt-2 border-t border-gray-100">
+            <label className="flex items-center gap-2 cursor-pointer text-xs font-mono font-bold text-[#195aa7]">
               <input
                 type="checkbox"
                 checked={only3D}
                 onChange={(e) => setOnly3D(e.target.checked)}
-                className="w-4 h-4 rounded accent-[#0288D1] bg-white border-[#B3E5FC]"
+                className="w-4 h-4 rounded text-[#195aa7] border-gray-300 focus:ring-[#195aa7]"
               />
-              <span className="text-xs font-mono text-[#0B2838] flex items-center gap-1.5 font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-[#0288D1]" />
-                Only 3D & Video Loop SKUs
+              <span className="flex items-center gap-1">
+                <RotateCw className="w-3.5 h-3.5 text-[#eb5d0b]" /> Only 360° Studio Models
               </span>
             </label>
           </div>
+
+          {/* Free Shipping Badge in Sidebar */}
+          <div className="p-4 rounded-2xl bg-[#eb5d0b]/10 border border-[#eb5d0b]/30 space-y-1.5 font-mono text-xs text-[#195aa7]">
+            <div className="font-bold flex items-center gap-1.5 text-[#eb5d0b]">
+              <Truck className="w-4 h-4" /> Free Shipping On $150+
+            </div>
+            <p className="text-[11px] text-gray-600">
+              Orders ship within 24 hours with tracked DHL Express air delivery.
+            </p>
+          </div>
+
         </div>
 
-        {/* Right Content Area */}
+        {/* Right Product Grid/List Area */}
         <div className="lg:col-span-9 space-y-6">
-          {/* Search, Sorting & View Toggle Bar */}
-          <div className="bg-white p-4 rounded-2xl border border-[#B3E5FC] shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#29B6F6]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Filter by product name, code (e.g. MT-HF-001), size..."
-                className="w-full pl-10 pr-4 py-2 text-xs bg-[#F4FAFD] focus:bg-white rounded-xl border border-[#B3E5FC] focus:outline-none focus:border-[#0288D1] text-[#0B2838] font-mono"
-              />
+          
+          {/* Top Sort & View Toolbar */}
+          <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+            <div className="text-gray-600">
+              Showing <strong className="text-[#195aa7]">{filteredProducts.length}</strong> surgical instruments
             </div>
 
-            <div className="flex items-center gap-3 shrink-0 font-mono">
+            <div className="flex items-center gap-4">
+              {/* Sort By */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-[#355C75] hidden sm:inline">Sort:</span>
+                <span className="text-gray-500">Sort by:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="p-2 text-xs rounded-xl border border-[#B3E5FC] bg-white text-[#0B2838] focus:border-[#0288D1] focus:outline-none"
+                  className="bg-[#f8fbfe] border border-gray-200 rounded-xl px-3 py-1.5 text-xs text-[#195aa7] font-bold focus:outline-none focus:border-[#195aa7]"
                 >
-                  <option value="featured">Best Sellers First</option>
-                  <option value="code">Product Code (MT-A-Z)</option>
+                  <option value="featured">Best Sellers</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
+                  <option value="code">Product Code (SKU)</option>
                 </select>
               </div>
 
-              {/* Grid / List Mode */}
-              <div className="flex items-center bg-[#E1F5FE] rounded-xl p-1 border border-[#81D4FA]">
+              {/* View mode toggle */}
+              <div className="flex items-center bg-[#f8fbfe] p-1 rounded-xl border border-gray-200">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-1.5 rounded-lg transition-colors ${
-                    viewMode === 'grid' ? 'bg-[#0288D1] text-white font-bold shadow-xs' : 'text-[#355C75] hover:text-[#0B2838]'
+                    viewMode === 'grid' ? 'bg-[#195aa7] text-white shadow-xs' : 'text-gray-400 hover:text-gray-700'
                   }`}
                   title="Grid View"
                 >
@@ -301,9 +338,9 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                 <button
                   onClick={() => setViewMode('list')}
                   className={`p-1.5 rounded-lg transition-colors ${
-                    viewMode === 'list' ? 'bg-[#0288D1] text-white font-bold shadow-xs' : 'text-[#355C75] hover:text-[#0B2838]'
+                    viewMode === 'list' ? 'bg-[#195aa7] text-white shadow-xs' : 'text-gray-400 hover:text-gray-700'
                   }`}
-                  title="B2B List View"
+                  title="List View"
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -311,21 +348,13 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
             </div>
           </div>
 
-          {/* Results Summary */}
-          <div className="flex items-center justify-between text-xs text-[#355C75] px-1 font-mono">
-            <span>Showing <strong className="text-[#0B2838]">{filteredProducts.length}</strong> matching medical instruments</span>
-            <span className="text-[11px] text-[#0288D1] font-bold">Sialkot Manufacturing • CE / ISO Space</span>
-          </div>
-
-          {/* Product Grid / List */}
+          {/* Products Container */}
           {filteredProducts.length === 0 ? (
-            <div className="p-12 text-center bg-white rounded-2xl border border-[#B3E5FC] space-y-3 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-[#E1F5FE] text-[#0288D1] flex items-center justify-center mx-auto border border-[#81D4FA]">
-                <Search className="w-6 h-6 text-[#0288D1]" />
-              </div>
-              <h3 className="text-base font-bold text-[#0B2838]">No Instruments Found</h3>
-              <p className="text-xs text-[#355C75] max-w-sm mx-auto">
-                No surgical tools matched your active filters. Try resetting the category or search keyword.
+            <div className="p-16 text-center bg-white rounded-3xl border border-gray-200 space-y-4">
+              <ShoppingBag className="w-12 h-12 text-gray-300 mx-auto" />
+              <h3 className="text-xl font-bold text-[#195aa7]">No Instruments Found</h3>
+              <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                No instruments match your current filter selection. Try adjusting your search term or clearing filters.
               </p>
               <button
                 onClick={() => {
@@ -333,176 +362,206 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
                   setSelectedSubCategory('all');
                   setSearchQuery('');
                   setSelectedFinish('all');
+                  setOnly3D(false);
                 }}
-                className="px-4 py-2 bg-[#0288D1] hover:bg-[#0277BD] text-white font-bold font-mono rounded-xl text-xs uppercase transition-colors shadow-md shadow-[#0288D1]/25"
+                className="px-5 py-2.5 rounded-xl bg-[#195aa7] text-white text-xs font-mono font-bold uppercase tracking-wider"
               >
                 Clear All Filters
               </button>
             </div>
           ) : viewMode === 'grid' ? (
+            /* E-Commerce Grid View */
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((prod) => (
                 <div
                   key={prod.id}
-                  className="bg-white rounded-2xl border border-[#B3E5FC] overflow-hidden hover:border-[#0288D1] transition-all flex flex-col justify-between group shadow-sm hover:shadow-md"
+                  className="bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#1ab8ec] shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group relative"
                 >
                   <div>
-                    {/* Image Area */}
-                    <div className="relative aspect-square bg-[#F4FAFD] p-6 flex items-center justify-center border-b border-[#B3E5FC]/60 overflow-hidden">
+                    {/* Thumbnail Image Area */}
+                    <div className="relative aspect-square rounded-2xl bg-[#f8fbfe] p-6 flex items-center justify-center overflow-hidden mb-5 border border-slate-100 group-hover:bg-white transition-colors">
                       <img
                         src={prod.images[0]}
                         alt={prod.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/surgical1.jpg';
+                        }}
                       />
 
-                      <div className="absolute top-3 left-3 flex flex-col gap-1">
-                        <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-white text-[#01579B] border border-[#81D4FA]">
-                          {prod.code}
-                        </span>
-                        {prod.isBestSeller && (
-                          <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold bg-[#0288D1] text-white">
-                            BEST SELLER
-                          </span>
-                        )}
-                      </div>
+                      {/* Top Left SKU Code */}
+                      <span className="absolute top-3.5 left-3.5 px-2.5 py-0.5 rounded-lg bg-[#195aa7] text-white font-mono text-[11px] font-black">
+                        {prod.code}
+                      </span>
 
                       {/* 3D button */}
                       {prod.has3DModel && (
                         <button
-                          onClick={() => onOpen3DStudio(prod)}
-                          className="absolute bottom-3 right-3 p-2 rounded-xl bg-white hover:bg-[#0288D1] text-[#0288D1] hover:text-white border border-[#81D4FA] transition-colors shadow-sm"
-                          title="Interactive 3D Turntable"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onOpen3DStudio(prod);
+                          }}
+                          className="absolute bottom-3.5 right-3.5 px-2.5 py-1 rounded-lg bg-[#1ab8ec] hover:bg-[#149ec9] text-[#195aa7] font-mono text-[10px] font-bold flex items-center gap-1 shadow-sm transition-transform hover:scale-105"
+                          title="Interactive 360° Turntable"
                         >
-                          <Sparkles className="w-3.5 h-3.5" />
+                          <RotateCw className="w-3 h-3" />
+                          <span>360°</span>
                         </button>
                       )}
+
+                      <span className="absolute top-3.5 right-3.5 px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-mono text-[10px] font-bold">
+                        In Stock
+                      </span>
                     </div>
 
                     {/* Details */}
-                    <div className="p-5 space-y-2">
-                      <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#62879F] font-mono">
+                    <div className="space-y-2">
+                      <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#1ab8ec]">
                         {prod.category} • {prod.subCategory}
                       </div>
 
                       <h3
                         onClick={() => onNavigateToDetail(prod.id)}
-                        className="text-sm font-bold text-[#0B2838] hover:text-[#0288D1] cursor-pointer line-clamp-2 transition-colors"
+                        className="text-base font-black text-[#195aa7] hover:text-[#eb5d0b] cursor-pointer line-clamp-2 transition-colors leading-snug"
                       >
                         {prod.name}
                       </h3>
 
-                      <p className="text-xs text-[#355C75] line-clamp-2">
+                      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
                         {prod.shortDesc}
                       </p>
 
-                      <div className="text-[10px] text-[#0B2838] font-mono bg-[#F4FAFD] p-2 rounded-xl border border-[#B3E5FC]">
+                      <div className="text-[11px] text-gray-600 font-mono bg-[#f8fbfe] p-2 rounded-xl border border-gray-200/60">
                         {prod.material} • {prod.size}
                       </div>
                     </div>
                   </div>
 
-                  {/* Actions & B2B Inquiry */}
-                  <div className="p-5 pt-0 space-y-3">
-                    <div className="flex items-center justify-between border-t border-[#B3E5FC]/60 pt-3 text-[10px] font-mono">
-                      <span className="text-[#355C75] flex items-center gap-1 font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        In Stock & OEM
-                      </span>
-                      <span className="text-[#0288D1] font-semibold bg-[#E1F5FE] px-2 py-0.5 rounded border border-[#81D4FA]">
-                        Volume Pricing on RFQ
-                      </span>
-                    </div>
+                  {/* Actions & Add to Cart */}
+                  <div className="pt-5 mt-5 border-t border-gray-100 space-y-3 font-mono">
+                    <div className="flex items-baseline justify-between">
+                      <div>
+                        <span className="text-xl font-black text-[#195aa7]">
+                          ${prod.price.toFixed(2)}
+                        </span>
+                        <span className="text-xs text-gray-400 line-through ml-2">
+                          ${Math.round(prod.price * 1.25)}.00
+                        </span>
+                      </div>
 
-                    <div className="grid grid-cols-2 gap-2 font-mono">
                       <button
                         onClick={() => onOpenQuickView(prod)}
-                        className="w-full py-2 bg-white hover:bg-[#F0F9FF] text-[#0B2838] rounded-xl text-xs transition-colors flex items-center justify-center gap-1 border border-[#B3E5FC]"
+                        className="p-2 rounded-xl bg-[#f4f8fc] hover:bg-[#1ab8ec]/20 text-[#195aa7] transition-all"
+                        title="Quick View"
                       >
-                        <Eye className="w-3.5 h-3.5 text-[#0288D1]" /> Quick View
+                        <Eye className="w-4 h-4" />
                       </button>
+                    </div>
+
+                    {/* Pure E-Commerce Buttons */}
+                    <div className="grid grid-cols-2 gap-2">
                       <button
-                        onClick={() => onOpenRFQ(prod)}
-                        className="w-full py-2 bg-[#0288D1] hover:bg-[#0277BD] text-white font-bold rounded-xl text-xs transition-colors flex items-center justify-center gap-1 shadow-xs"
+                        onClick={(e) => handleAddToCart(prod, e)}
+                        className="w-full py-2.5 rounded-xl bg-[#195aa7] hover:bg-[#12437e] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
                       >
-                        <FileText className="w-3.5 h-3.5 text-[#B3E5FC]" /> B2B Quote
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Add</span>
+                      </button>
+
+                      <button
+                        onClick={(e) => handleQuickBuy(prod, e)}
+                        className="w-full py-2.5 rounded-xl bg-[#eb5d0b] hover:bg-[#d65106] text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md shadow-[#eb5d0b]/30 active:scale-95"
+                      >
+                        <span>Buy Now</span>
                       </button>
                     </div>
 
                     <button
                       onClick={() => onNavigateToDetail(prod.id)}
-                      className="w-full py-2 border border-[#B3E5FC] hover:border-[#0288D1] hover:text-[#0288D1] text-[#355C75] rounded-xl text-xs font-mono transition-colors flex items-center justify-center gap-1"
+                      className="w-full py-1.5 text-center text-xs text-gray-400 hover:text-[#195aa7] transition-colors"
                     >
-                      Specifications <ChevronRight className="w-3.5 h-3.5" />
+                      View Full Specs →
                     </button>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            /* B2B List View */
-            <div className="space-y-3">
+            /* E-Commerce List View */
+            <div className="space-y-4 font-mono">
               {filteredProducts.map((prod) => (
                 <div
                   key={prod.id}
-                  className="p-4 bg-white rounded-2xl border border-[#B3E5FC] hover:border-[#0288D1] transition-all flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm"
+                  className="p-5 bg-white rounded-3xl border border-gray-200 hover:border-[#1ab8ec] transition-all flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm group"
                 >
-                  <div className="flex items-center gap-4 w-full md:w-auto">
+                  <div className="flex items-center gap-5 w-full md:w-auto">
                     <img
                       src={prod.images[0]}
                       alt={prod.name}
-                      className="w-16 h-16 object-contain bg-[#F4FAFD] rounded-xl border border-[#B3E5FC] p-1 shrink-0"
+                      className="w-20 h-20 object-contain bg-[#f8fbfe] rounded-2xl border border-gray-200 p-2 shrink-0"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/surgical1.jpg';
+                      }}
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold text-[#01579B] bg-[#E1F5FE] px-2 py-0.5 rounded-lg border border-[#81D4FA]">
+                        <span className="text-xs font-black text-[#195aa7] bg-[#f4f8fc] px-2.5 py-0.5 rounded-lg border border-gray-200">
                           {prod.code}
                         </span>
-                        <span className="text-[10px] text-[#62879F] font-mono">{prod.folderPath}</span>
+                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
+                          In Stock
+                        </span>
                       </div>
+
                       <h3
                         onClick={() => onNavigateToDetail(prod.id)}
-                        className="text-sm font-bold text-[#0B2838] hover:text-[#0288D1] cursor-pointer mt-0.5"
+                        className="text-base font-bold text-[#195aa7] hover:text-[#eb5d0b] cursor-pointer mt-1 font-sans"
                       >
                         {prod.name}
                       </h3>
-                      <div className="text-xs text-[#355C75] font-mono flex flex-wrap gap-x-3 gap-y-1 mt-1">
+
+                      <div className="text-xs text-gray-500 flex flex-wrap gap-x-3 gap-y-1 mt-1">
                         <span><strong>Material:</strong> {prod.material}</span>
-                        <span><strong>Hardness:</strong> {prod.hardness}</span>
+                        <span>•</span>
+                        <span><strong>Finish:</strong> {prod.finish}</span>
+                        <span>•</span>
                         <span><strong>Size:</strong> {prod.size}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-[#B3E5FC]/60">
-                    <div className="text-right font-mono">
-                      <div className="text-xs font-bold text-[#0288D1] bg-[#E1F5FE] px-2.5 py-1 rounded-md border border-[#81D4FA]">
-                        B2B Factory Supply
+                  <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-gray-100">
+                    <div className="text-right">
+                      <div className="text-2xl font-black text-[#195aa7]">
+                        ${prod.price.toFixed(2)}
                       </div>
-                      <div className="text-[10px] text-[#62879F] mt-0.5">
-                        Volume Tier on RFQ
+                      <div className="text-[10px] text-emerald-600 font-bold uppercase">
+                        24h Express Dispatch
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 font-mono">
+                    <div className="flex items-center gap-2">
                       <button
                         onClick={() => onOpenQuickView(prod)}
-                        className="p-2 rounded-xl bg-white hover:bg-[#F0F9FF] text-[#355C75] hover:text-[#0288D1] border border-[#B3E5FC]"
+                        className="p-3 rounded-xl bg-[#f4f8fc] hover:bg-[#1ab8ec]/20 text-[#195aa7] border border-gray-200 transition-colors"
                         title="Quick View"
                       >
-                        <Eye className="w-4 h-4 text-[#0288D1]" />
+                        <Eye className="w-4 h-4" />
                       </button>
+
                       <button
-                        onClick={() => onOpenDataSheet(prod)}
-                        className="p-2 rounded-xl bg-white hover:bg-[#F0F9FF] text-[#355C75] hover:text-[#0288D1] border border-[#B3E5FC]"
-                        title="Download Technical Spec Sheet"
+                        onClick={(e) => handleAddToCart(prod, e)}
+                        className="px-5 py-3 rounded-xl bg-[#195aa7] hover:bg-[#12437e] text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
                       >
-                        <FileText className="w-4 h-4 text-[#0288D1]" />
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>Add</span>
                       </button>
+
                       <button
-                        onClick={() => onOpenRFQ(prod)}
-                        className="px-3.5 py-2 rounded-xl bg-[#0288D1] hover:bg-[#0277BD] text-white font-bold text-xs shadow-md shadow-[#0288D1]/25"
+                        onClick={(e) => handleQuickBuy(prod, e)}
+                        className="px-5 py-3 rounded-xl bg-[#eb5d0b] hover:bg-[#d65106] text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-[#eb5d0b]/30 transition-all active:scale-95"
                       >
-                        RFQ Quote
+                        Buy Now
                       </button>
                     </div>
                   </div>
@@ -510,8 +569,11 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({
               ))}
             </div>
           )}
+
         </div>
+
       </div>
+
     </div>
   );
 };

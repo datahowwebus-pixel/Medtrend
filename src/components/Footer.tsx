@@ -1,9 +1,9 @@
 import React from 'react';
 import { 
   ShieldCheck, MapPin, Mail, Phone, Globe, Download, 
-  ExternalLink, ArrowRight, CheckCircle2, Lock, Package, FileText 
+  ExternalLink, ArrowRight, CheckCircle2, Lock, Package, FileText, Settings, Award
 } from 'lucide-react';
-import { BRAND_CONFIG } from '../data/brandData';
+import { useCompany } from '../context/CompanyContext';
 import { CATEGORIES_TREE } from '../data/productsData';
 
 interface FooterProps {
@@ -17,94 +17,118 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenFolderGuide,
   onOpenRFQ
 }) => {
+  const { company, setIsDevModalOpen } = useCompany();
+
   return (
-    <footer className="bg-[#F4FAFD] text-[#355C75] border-t border-[#B3E5FC] text-xs">
-      {/* Trust & Certifications Space Bar */}
-      <div className="border-b border-[#B3E5FC] bg-[#E1F5FE] py-6 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-[#81D4FA] flex items-center justify-center text-[#0288D1] shrink-0 shadow-xs">
+    <footer className="bg-[#195aa7] text-white text-xs border-t-4 border-[#eb5d0b]">
+      
+      {/* 1. GerMedUSA & Duckworth & Kent Clinical Trust Bar (Fun Blue #195aa7 with Eastern Blue #1ab8ec & Christine #eb5d0b badges) */}
+      <div className="border-b border-white/15 bg-[#12437e] py-6 px-6 sm:px-10 lg:px-14 xl:px-16">
+        <div className="max-w-[1480px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
+          
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-[#0B2838] text-xs tracking-tight">Sialkot Metallurgy</p>
-              <p className="text-[10px] text-[#355C75] font-mono">German DIN 1.4021 / 1.4117</p>
+              <p className="font-bold text-white text-xs tracking-tight">Sialkot Metallurgy</p>
+              <p className="text-[10px] text-[#1ab8ec] font-mono">German DIN & ASTM F899</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-[#81D4FA] flex items-center justify-center text-[#0288D1] shrink-0 shadow-xs">
-              <Globe className="w-5 h-5" />
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
+              <Award className="w-5 h-5 font-black" />
             </div>
             <div>
-              <p className="font-bold text-[#0B2838] text-xs tracking-tight">Global Direct Supply</p>
-              <p className="text-[10px] text-[#355C75] font-mono">USA • EU • GCC • Worldwide</p>
+              <p className="font-bold text-white text-xs tracking-tight">{company.isoCertification.split(' ')[0] || 'ISO 13485'}</p>
+              <p className="text-[10px] text-white/80 font-mono">CE & FDA Registered</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-[#81D4FA] flex items-center justify-center text-[#0288D1] shrink-0 shadow-xs">
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
               <Package className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-[#0B2838] text-xs tracking-tight">OEM & Private Label</p>
-              <p className="text-[10px] text-[#355C75] font-mono">Custom Laser Etching & Kits</p>
+              <p className="font-bold text-white text-xs tracking-tight">OEM & Hospital Kits</p>
+              <p className="text-[10px] text-[#1ab8ec] font-mono">Custom Laser Engraving</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-[#81D4FA] flex items-center justify-center text-[#0288D1] shrink-0 shadow-xs">
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-[#0B2838] text-xs tracking-tight">100% Autoclavable</p>
-              <p className="text-[10px] text-[#355C75] font-mono">Tested to 134°C (273°F)</p>
+              <p className="font-bold text-white text-xs tracking-tight">100% Autoclavable</p>
+              <p className="text-[10px] text-white/80 font-mono">Steam Tested to 134°C</p>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* 2. Main Footer Links & Company Details */}
+      <div className="max-w-[1480px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-16 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Brand Info & Origin */}
+          
+          {/* Brand Info & Live Details */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0288D1] to-[#29B6F6] flex items-center justify-center text-white font-black text-sm shadow-md shadow-[#0288D1]/30">
-                M
-              </div>
-              <span className="text-xl font-black text-[#0B2838] tracking-tight">MEDTREND®</span>
+            <div className="inline-block bg-white px-3.5 py-2 rounded-xl shadow-md">
+              <img
+                src="/medtrendlogo.jpg"
+                alt="MEDTREND Surgical Instruments"
+                className="h-8 sm:h-9 w-auto object-contain"
+              />
             </div>
 
-            <p className="text-xs text-[#355C75] leading-relaxed max-w-sm">
-              {BRAND_CONFIG.positioningStatement}
+            <p className="text-xs text-white/80 leading-relaxed max-w-sm font-sans">
+              Precision surgical instruments crafted in Sialkot, Pakistan for international healthcare systems, surgical teams, hospital procurement, and global medical distributors across USA, Europe, and worldwide.
             </p>
 
-            <div className="space-y-2 text-[#355C75] text-xs pt-1 font-mono">
+            <div className="space-y-2 text-white/90 text-xs pt-1 font-mono">
               <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-[#0288D1] shrink-0 mt-0.5" />
-                <span>Manufacturing HQ: Small Industrial Estate, Sialkot 51310, Punjab, Pakistan</span>
+                <MapPin className="w-4 h-4 text-[#eb5d0b] shrink-0 mt-0.5" />
+                <span><strong>HQ & Factory:</strong> {company.hqAddress}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Globe className="w-4 h-4 text-[#1ab8ec] shrink-0 mt-0.5" />
+                <span><strong>USA Hub:</strong> {company.internationalOffice}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#0288D1] shrink-0" />
-                <span>export@medtrendinstruments.com / info@medtrend.com</span>
+                <Mail className="w-4 h-4 text-[#1ab8ec] shrink-0" />
+                <span>{company.primaryEmail} (Quotes: {company.rfqEmail})</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#0288D1] shrink-0" />
-                <span>+92 (52) 429-1800 • B2B Direct Desk</span>
+                <Phone className="w-4 h-4 text-[#eb5d0b] shrink-0" />
+                <span>{company.primaryPhone} • Toll-Free: {company.tollFreePhone}</span>
               </div>
+            </div>
+
+            {/* Quick Developer Mode Button */}
+            <div className="pt-2">
+              <button
+                onClick={() => setIsDevModalOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-[#eb5d0b] text-white text-xs font-mono font-bold transition-all border border-white/20"
+              >
+                <Settings className="w-3.5 h-3.5 text-[#1ab8ec]" />
+                <span>Developer Mode: Edit Info Across Website</span>
+              </button>
             </div>
           </div>
 
-          {/* Product Categories */}
+          {/* Instrument Categories (GerMedUSA structure) */}
           <div className="space-y-3">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#01579B]">Categories</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+              Specialties & Groups
+            </h4>
             <ul className="space-y-2 text-xs">
               {CATEGORIES_TREE.map((cat) => (
                 <li key={cat.slug}>
                   <button
                     onClick={() => onNavigate('products', undefined, cat.slug)}
-                    className="text-[#355C75] hover:text-[#0288D1] hover:translate-x-1 transition-all text-left"
+                    className="text-white/80 hover:text-[#1ab8ec] hover:translate-x-1 transition-all text-left font-medium"
                   >
                     {cat.name}
                   </button>
@@ -113,100 +137,111 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <button
                   onClick={() => onNavigate('showcase-3d')}
-                  className="text-[#0288D1] hover:underline font-mono text-xs flex items-center gap-1 font-bold"
+                  className="text-[#eb5d0b] hover:underline font-mono text-xs flex items-center gap-1 font-bold"
                 >
-                  3D Interactive Models →
+                  360° Inspection Lab →
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Commercial & B2B Portals */}
+          {/* Customer Support & Direct Shopping */}
           <div className="space-y-3">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#01579B]">B2B & Trade</h4>
-            <ul className="space-y-2 text-xs text-[#355C75]">
+            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+              Customer Care & Shopping
+            </h4>
+            <ul className="space-y-2 text-xs text-white/80 font-medium">
               <li>
-                <button onClick={() => onNavigate('b2b-wholesale')} className="hover:text-[#0288D1] transition-colors">
-                  Distributor Application
+                <button onClick={() => onNavigate('cart-checkout')} className="hover:text-white transition-colors">
+                  Shopping Cart & Checkout
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('b2b-wholesale')} className="hover:text-[#0288D1] transition-colors">
-                  OEM & Private Labeling
+                <button onClick={() => onNavigate('order-tracking')} className="text-[#1ab8ec] font-mono hover:underline font-bold">
+                  Track Airway Bill / Order
                 </button>
               </li>
               <li>
-                <button onClick={onOpenRFQ} className="text-[#0288D1] font-mono hover:underline font-bold">
-                  Request Volume Quote (RFQ)
+                <button onClick={() => onNavigate('products')} className="text-[#eb5d0b] font-mono hover:underline font-bold">
+                  Shop All Surgical Instruments
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('catalog-datasheets')} className="hover:text-[#0288D1] transition-colors">
-                  Digital PDF Catalog
+                <button onClick={() => onNavigate('catalog-datasheets')} className="hover:text-white transition-colors">
+                  Download Spec Sheets & TDS
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('quality-certifications')} className="hover:text-[#0288D1] transition-colors">
-                  ISO 13485 & CE Space
+                <button onClick={() => onNavigate('quality-certifications')} className="hover:text-white transition-colors">
+                  ISO 13485 & CE MDR Files
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('order-tracking')} className="hover:text-[#0288D1] transition-colors">
-                  Global Order Tracking
-                </button>
+                <span className="text-white/60">
+                  Free Express Shipping on $150+
+                </span>
               </li>
             </ul>
           </div>
 
-          {/* Developer & Asset System */}
+          {/* Regulatory & System Architecture */}
           <div className="space-y-3">
-            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#01579B]">System Architecture</h4>
-            <ul className="space-y-2 text-xs text-[#355C75]">
+            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+              System & Literature
+            </h4>
+            <ul className="space-y-2 text-xs text-white/80 font-medium">
               <li>
-                <button onClick={onOpenFolderGuide} className="hover:text-[#0288D1] transition-colors text-[#0288D1] font-mono text-[11px] flex items-center gap-1 font-bold">
-                  Folder Structure Specs
+                <button onClick={onOpenFolderGuide} className="text-[#1ab8ec] font-mono hover:underline font-bold flex items-center gap-1">
+                  Folder & Image Directory
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('brand-guidelines')} className="hover:text-[#0288D1] transition-colors">
-                  Brand Guidelines Manual
+                <button onClick={() => onNavigate('brand-guidelines')} className="hover:text-white transition-colors">
+                  Brand Style Specifications
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-[#0288D1] transition-colors">
+                <button onClick={() => onNavigate('about')} className="hover:text-white transition-colors">
                   Sialkot Artisan Heritage
                 </button>
               </li>
             </ul>
 
-            {/* Newsletter */}
+            {/* GerMedUSA B2B Technical Bulletin */}
             <div className="pt-2">
-              <p className="text-[10px] text-[#355C75] font-mono uppercase tracking-wider mb-1.5">B2B Technical Bulletin:</p>
+              <p className="text-[10px] text-white/70 font-mono uppercase tracking-wider mb-1.5">
+                Hospital Procurement Bulletin:
+              </p>
               <div className="flex">
                 <input
                   type="email"
                   placeholder="hospital@domain.com"
-                  className="w-full bg-white border border-[#B3E5FC] rounded-l-xl px-2.5 py-1.5 text-xs text-[#0B2838] focus:outline-none focus:border-[#0288D1] font-mono placeholder-[#62879F]"
+                  aria-label="Hospital Procurement Bulletin Email"
+                  className="w-full bg-white/10 border border-white/20 rounded-l-xl px-2.5 py-1.5 text-xs text-white placeholder-white/50 focus:outline-none focus:border-[#1ab8ec] font-mono"
                 />
-                <button className="bg-[#0288D1] hover:bg-[#0277BD] text-white px-3 py-1.5 rounded-r-xl font-bold text-xs uppercase tracking-wider transition-colors shadow-xs">
+                <button 
+                  aria-label="Subscribe to Hospital Procurement Bulletin"
+                  className="bg-[#eb5d0b] hover:bg-[#d65106] text-white px-3 py-1.5 rounded-r-xl font-bold text-xs uppercase tracking-wider transition-colors shadow-md">
                   Join
                 </button>
               </div>
             </div>
           </div>
+
         </div>
 
-        {/* Regulatory Notice */}
-        <div className="mt-8 pt-6 border-t border-[#B3E5FC] text-[11px] text-[#62879F] leading-relaxed">
+        {/* Regulatory Notice per GerMedUSA and Duckworth & Kent */}
+        <div className="mt-8 pt-6 border-t border-white/15 text-[11px] text-white/70 leading-relaxed">
           <p className="mb-2">
-            <strong className="text-[#0B2838]">Legal & Regulatory Compliance Space:</strong> MEDTREND® is a registered brand of Medtrend Pvt. Ltd. (Sialkot, Pakistan). All surgical instruments are manufactured in accordance with strict international metallurgy (ASTM / DIN standards) and facility quality management system provisions (ISO 13485). CE declaration of conformity and FDA establishment registrations are provided per applicable regional jurisdiction.
+            <strong className="text-white">Regulatory & Compliance Mandate:</strong> {company.companyName} is registered under DIN EN ISO 13485:2016 for the design, drop-forging, CNC machining, passivation, and supply of reusable surgical, dental, and orthopedic instruments. Stainless steel alloys conform strictly to ASTM F899 (AISI 420A/420B/440A) and titanium products utilize biocompatible Ti-6Al-4V ELI (ASTM F136). CE Class I & IIa declarations of conformity are provided for institutional tenders.
           </p>
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-[#B3E5FC]/70 text-[9px] uppercase tracking-[0.2em] text-[#355C75] font-mono">
-            <div>System Status: <span className="text-[#0288D1] font-bold">Nominal // Active</span></div>
-            <div>© {new Date().getFullYear()} MEDTREND® SURGICAL TECHNOLOGIES</div>
-            <div>Localized: Sialkot // PK</div>
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10 text-[10px] uppercase tracking-widest text-[#1ab8ec] font-mono">
+            <div>Global Status: <span className="text-white font-bold">Operational // Active Air Freight</span></div>
+            <div>© {new Date().getFullYear()} {company.companyName}</div>
+            <div>Manufacturing Base: Sialkot, PK</div>
           </div>
         </div>
+
       </div>
     </footer>
   );

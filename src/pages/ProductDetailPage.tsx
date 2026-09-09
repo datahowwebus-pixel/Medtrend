@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   ShoppingBag, FileText, Sparkles, ShieldCheck, CheckCircle2, 
-  RotateCw, ArrowLeft, Heart, Share2, Layers, Check, Box, ChevronRight, Download, Eye
+  RotateCw, ArrowLeft, Heart, Share2, Layers, Check, Box, ChevronRight, Download, Eye,
+  Truck, Lock, Tag, Award, Star, Clock, AlertCircle
 } from 'lucide-react';
 import { Product } from '../types';
 import { PRODUCTS } from '../data/productsData';
@@ -12,9 +13,11 @@ interface ProductDetailPageProps {
   onNavigateBack: () => void;
   onNavigateToProduct: (productId: string) => void;
   onAddToCart: (product: Product, finish: string, quantity: number, customEngraving?: string) => void;
-  onOpenRFQ: (product: Product) => void;
+  onOpenRFQ?: (product: Product) => void;
   onOpenDataSheet: (product: Product) => void;
   onOpen3DStudio: (product: Product) => void;
+  onOpenCart?: () => void;
+  onNavigateToCheckout?: () => void;
 }
 
 export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
@@ -22,9 +25,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   onNavigateBack,
   onNavigateToProduct,
   onAddToCart,
-  onOpenRFQ,
   onOpenDataSheet,
-  onOpen3DStudio
+  onOpen3DStudio,
+  onOpenCart,
+  onNavigateToCheckout
 }) => {
   const product = PRODUCTS.find(p => p.id === productId) || PRODUCTS[0];
   
@@ -34,49 +38,62 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [activeViewMode, setActiveViewMode] = useState<'photos' | '3d-turntable'>('photos');
   const [customEngraving, setCustomEngraving] = useState<string>('');
   const [addedToast, setAddedToast] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'specs' | 'metallurgy' | 'reviews'>('specs');
 
   const relatedProducts = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const originalPrice = Math.round(product.price * 1.25);
 
   const handleAddToCart = () => {
     onAddToCart(product, selectedFinish, quantity, customEngraving);
     setAddedToast(true);
-    setTimeout(() => setAddedToast(false), 2000);
+    setTimeout(() => setAddedToast(false), 2500);
+    if (onOpenCart) {
+      onOpenCart();
+    }
+  };
+
+  const handleBuyNow = () => {
+    onAddToCart(product, selectedFinish, quantity, customEngraving);
+    if (onNavigateToCheckout) {
+      onNavigateToCheckout();
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 pb-24 text-[#0B2838] bg-white">
+    <div className="max-w-[1480px] mx-auto px-6 sm:px-10 lg:px-14 xl:px-16 py-10 space-y-12 pb-28 text-[#195aa7] bg-[#f8fbfe]">
+      
       {/* Back Button & Category Breadcrumb */}
-      <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-[#355C75]">
+      <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
         <button
           onClick={onNavigateBack}
-          className="inline-flex items-center gap-1.5 font-bold text-[#0B2838] hover:text-[#0288D1] transition-colors bg-white px-3.5 py-2 rounded-xl border border-[#B3E5FC] shadow-xs"
+          className="inline-flex items-center gap-2 font-bold text-[#195aa7] hover:text-[#eb5d0b] transition-colors bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-xs"
         >
-          <ArrowLeft className="w-4 h-4 text-[#0288D1]" /> Back to Catalog
+          <ArrowLeft className="w-4 h-4 text-[#eb5d0b]" /> Back to Products
         </button>
 
-        <div className="flex items-center gap-2 text-[11px]">
-          <span className="text-[#62879F]">Our Products</span>
-          <span className="text-[#B3E5FC]">/</span>
-          <span className="text-[#355C75]">{product.category}</span>
-          <span className="text-[#B3E5FC]">/</span>
-          <span className="text-[#355C75]">{product.subCategory}</span>
-          <span className="text-[#B3E5FC]">/</span>
-          <span className="text-[#0288D1] font-bold">{product.code}</span>
+        <div className="flex items-center gap-2 text-xs text-gray-500">
+          <span>Shop</span>
+          <span>/</span>
+          <span className="text-[#195aa7] font-bold">{product.category}</span>
+          <span>/</span>
+          <span className="text-[#eb5d0b] font-mono font-bold">{product.code}</span>
         </div>
       </div>
 
-      {/* Main Product Showcase Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left 6 Cols: Photo Gallery & 3D Interactive Turntable */}
-        <div className="lg:col-span-6 space-y-4">
-          {/* Mode Switcher: 2D Photography vs 3D Turntable Simulator */}
-          <div className="flex items-center justify-between bg-[#E1F5FE] p-1.5 rounded-2xl border border-[#81D4FA] font-mono shadow-xs">
+      {/* Main Two-Column E-Commerce Product Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        {/* Left Column: Visual Gallery & 3D Interactive Turntable */}
+        <div className="lg:col-span-6 space-y-6">
+          
+          {/* Mode Switcher: 2D Photography vs 3D Turntable */}
+          <div className="flex items-center bg-white p-1.5 rounded-2xl border border-gray-200 shadow-sm font-mono text-xs">
             <button
               onClick={() => setActiveViewMode('photos')}
-              className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
                 activeViewMode === 'photos'
-                  ? 'bg-[#0288D1] text-white shadow-xs'
-                  : 'text-[#355C75] hover:text-[#0B2838]'
+                  ? 'bg-[#195aa7] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-[#195aa7]'
               }`}
             >
               <Eye className="w-4 h-4" />
@@ -85,55 +102,58 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
             <button
               onClick={() => setActiveViewMode('3d-turntable')}
-              className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
                 activeViewMode === '3d-turntable'
-                  ? 'bg-[#0288D1] text-white shadow-xs'
-                  : 'text-[#355C75] hover:text-[#0B2838]'
+                  ? 'bg-[#195aa7] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-[#195aa7]'
               }`}
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Interactive 3D / Video Loop</span>
+              <RotateCw className="w-4 h-4 text-[#1ab8ec]" />
+              <span>360° Inspection Video</span>
             </button>
           </div>
 
-          {/* Visual Display */}
+          {/* Visual Canvas */}
           {activeViewMode === 'photos' ? (
-            <div className="space-y-3">
-              <div className="relative aspect-square w-full rounded-2xl bg-[#F4FAFD] border border-[#B3E5FC] overflow-hidden flex items-center justify-center p-8 shadow-sm">
+            <div className="space-y-4">
+              <div className="relative aspect-square w-full rounded-3xl bg-white border border-gray-200 shadow-sm overflow-hidden flex items-center justify-center p-10 group">
                 <img
                   src={product.images[activeImageIdx] || product.images[0]}
                   alt={product.name}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/surgical1.jpg';
+                  }}
                 />
 
-                <div className="absolute top-4 left-4 flex flex-col gap-1.5 font-mono">
-                  <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-[#01579B] border border-[#81D4FA]">
+                <div className="absolute top-5 left-5 flex flex-col gap-2 font-mono text-xs">
+                  <span className="px-3 py-1 rounded-lg font-black bg-[#195aa7] text-white shadow-sm">
                     {product.code}
                   </span>
-                  <span className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-[#E1F5FE] text-[#0288D1] border border-[#B3E5FC]">
+                  <span className="px-3 py-1 rounded-lg font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     Autoclavable 134°C
                   </span>
                 </div>
 
-                <div className="absolute bottom-4 right-4 text-[10px] font-mono text-[#62879F] bg-white px-2.5 py-1 rounded-lg border border-[#B3E5FC]">
+                <div className="absolute bottom-5 right-5 text-[11px] font-mono text-gray-400 bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-gray-200">
                   Folder: {product.imageFolder}
                 </div>
               </div>
 
               {/* Multi-angle Thumbnails */}
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-3">
                 {product.images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`aspect-square rounded-xl bg-[#F4FAFD] border p-2 overflow-hidden transition-all ${
+                    className={`aspect-square rounded-2xl bg-white border-2 p-2 overflow-hidden transition-all ${
                       activeImageIdx === idx
-                        ? 'border-[#0288D1] ring-2 ring-[#0288D1]/30 bg-white'
-                        : 'border-[#B3E5FC] opacity-75 hover:opacity-100 hover:bg-white'
+                        ? 'border-[#eb5d0b] ring-2 ring-[#eb5d0b]/30 shadow-md'
+                        : 'border-gray-200 hover:border-[#1ab8ec]'
                     }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-contain" />
-                    <span className="block text-[9px] text-[#62879F] font-mono text-center mt-1">
+                    <span className="block text-[10px] text-gray-400 font-mono text-center mt-1">
                       Angle 0{idx + 1}
                     </span>
                   </button>
@@ -141,259 +161,397 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               </div>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Interactive3DViewer
                 modelType={product.model3DType || 'forceps'}
                 productName={product.name}
                 productCode={product.code}
                 initialFinish={selectedFinish}
                 heightClass="h-96 sm:h-[480px]"
-                videoLoopUrl={product.videoLoopUrl || '/images/3d-models/MT-HF-002-loop.mp4'}
+                videoLoopUrl={product.videoLoopUrl || '/3dslide1.mp4'}
               />
-              <p className="text-[11px] text-[#355C75] text-center font-mono">
-                Supports real 360° studio video loops, mouse scrubbing, CAD wireframes, and live shank laser engraving preview.
+              <p className="text-xs text-gray-500 text-center font-mono">
+                Real 360° video loop inspection with angle scrubbing and CAD wireframe overlay.
               </p>
             </div>
           )}
 
-          {/* Quick Action Badges */}
+          {/* Quick Technical Links */}
           <div className="grid grid-cols-2 gap-3 pt-2 font-mono">
             <button
               onClick={() => onOpenDataSheet(product)}
-              className="py-3 px-4 rounded-xl bg-white hover:bg-[#F0F9FF] border border-[#B3E5FC] text-[#0B2838] text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs"
+              className="py-3 px-4 rounded-2xl bg-white hover:bg-[#f4f8fc] border border-gray-200 text-[#195aa7] text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
-              <FileText className="w-4 h-4 text-[#0288D1]" />
+              <FileText className="w-4 h-4 text-[#1ab8ec]" />
               <span>Download Technical TDS</span>
             </button>
 
             <button
               onClick={() => onOpen3DStudio(product)}
-              className="py-3 px-4 rounded-xl bg-[#E1F5FE] hover:bg-[#B3E5FC] border border-[#81D4FA] text-[#01579B] text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-xs"
+              className="py-3 px-4 rounded-2xl bg-[#195aa7]/10 hover:bg-[#195aa7]/20 text-[#195aa7] text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
-              <Sparkles className="w-4 h-4 text-[#0288D1]" />
-              <span>3D CAD Inspection</span>
+              <Sparkles className="w-4 h-4 text-[#eb5d0b]" />
+              <span>Full 3D Inspection Lab</span>
             </button>
           </div>
         </div>
 
-        {/* Right 6 Cols: Commercial Pricing, Finish Selection & Specifications */}
+        {/* Right Column: Pricing, Options & E-Commerce Buy Box */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 font-mono">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#01579B] bg-[#E1F5FE] px-2.5 py-0.5 rounded-lg border border-[#81D4FA]">
+          
+          {/* Header Title & Rating */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 font-mono text-xs">
+              <span className="font-bold uppercase tracking-wider text-[#eb5d0b] bg-[#eb5d0b]/10 px-3 py-1 rounded-lg">
                 {product.category}
               </span>
-              <span className="text-xs text-[#B3E5FC]">•</span>
-              <span className="text-xs text-[#355C75] font-medium">{product.subCategory}</span>
+              <span className="text-gray-300">•</span>
+              <span className="text-gray-600 font-medium">{product.subCategory}</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B2838] tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-[#195aa7] tracking-tight leading-tight">
               {product.name}
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#355C75] leading-relaxed">
+            <div className="flex items-center gap-3">
+              <div className="flex text-amber-500 text-sm">
+                {'★'.repeat(Math.floor(product.rating))}
+              </div>
+              <span className="text-xs font-mono font-bold text-[#195aa7]">{product.rating} / 5.0</span>
+              <span className="text-xs text-gray-500 font-mono">({product.reviewCount} verified clinic reviews)</span>
+            </div>
+
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed pt-1">
               {product.shortDesc}
             </p>
           </div>
 
-          {/* Dual Pricing Box (Retail Direct vs B2B Wholesale Tiers) */}
-          <div className="p-6 rounded-2xl bg-white border border-[#B3E5FC] space-y-4 shadow-sm">
-            <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-[#B3E5FC]/60 pb-3">
+          {/* E-Commerce Buy Box */}
+          <div className="p-7 rounded-3xl bg-white border-2 border-[#1ab8ec]/40 space-y-6 shadow-sm">
+            
+            {/* Price section with direct discount */}
+            <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-gray-100 pb-5">
               <div>
-                <span className="text-xs font-mono text-[#62879F] font-medium">Direct Retail E-Commerce:</span>
-                <div className="text-3xl font-black font-mono text-[#0288D1]">${product.price.toFixed(2)}</div>
+                <span className="text-xs font-mono text-gray-400 font-bold block mb-1">Direct Factory Price:</span>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-4xl font-black font-mono text-[#195aa7]">
+                    ${product.price.toFixed(2)}
+                  </span>
+                  <span className="text-base text-gray-400 line-through font-mono">
+                    ${originalPrice}.00
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#eb5d0b]/10 text-[#eb5d0b] font-mono text-xs font-bold">
+                    Save 20%
+                  </span>
+                </div>
               </div>
-              <div className="text-right">
-                <span className="inline-flex items-center gap-1 text-xs font-mono font-bold text-[#01579B] bg-[#E1F5FE] border border-[#81D4FA] px-2.5 py-1 rounded-lg">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0288D1]" /> In Stock for Fast Dispatch
+
+              <div className="text-right font-mono">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> In Stock - Ships Within 24h
                 </span>
+                <div className="text-[11px] text-gray-500 mt-1">Free delivery on orders $150+</div>
               </div>
             </div>
 
-            {/* Wholesale Tier Pricing Matrix */}
-            <div className="font-mono">
-              <div className="text-xs font-bold text-[#0B2838] mb-2 flex items-center justify-between">
-                <span>B2B Institutional Volume Tiers:</span>
-                <span className="text-[11px] text-[#0288D1] font-bold">Direct Sialkot Port CIF/FOB</span>
-              </div>
-              <div className="grid grid-cols-4 gap-2 text-center">
-                {product.wholesalePriceTiers.map((tier, idx) => (
-                  <div key={idx} className="p-2.5 rounded-xl bg-[#F4FAFD] border border-[#B3E5FC]">
-                    <div className="text-[11px] text-[#62879F] font-medium">{tier.minQty}+ units</div>
-                    <div className="text-xs font-bold text-[#0288D1]">${tier.price.toFixed(2)}</div>
-                  </div>
+            {/* 1. Finish & Metallurgy Selector */}
+            <div className="space-y-2 font-mono">
+              <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                1. Select Surface Finish: <span className="text-[#eb5d0b] font-black">{selectedFinish}</span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {product.availableFinishes.map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setSelectedFinish(f)}
+                    className={`p-3 rounded-2xl text-xs font-bold border transition-all text-left flex items-center gap-2 ${
+                      selectedFinish === f
+                        ? 'bg-[#195aa7] text-white border-[#195aa7] shadow-md'
+                        : 'bg-[#f8fbfe] text-gray-700 border-gray-200 hover:border-[#1ab8ec]'
+                    }`}
+                  >
+                    <span className={`w-2 h-2 rounded-full ${selectedFinish === f ? 'bg-[#eb5d0b]' : 'bg-gray-400'}`} />
+                    <span>{f}</span>
+                  </button>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Finish & Metallurgy Selector */}
-          <div className="space-y-2 font-mono">
-            <label className="block text-xs font-bold text-[#355C75] uppercase tracking-wider">
-              1. Choose Metallurgy Finish: <span className="text-[#0288D1] font-bold">{selectedFinish}</span>
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {product.availableFinishes.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setSelectedFinish(f)}
-                  className={`p-2.5 rounded-xl text-xs font-semibold border transition-all text-left flex items-center gap-2 ${
-                    selectedFinish === f
-                      ? 'bg-[#E1F5FE] text-[#01579B] border-[#0288D1] font-bold shadow-xs'
-                      : 'bg-white text-[#355C75] border-[#B3E5FC] hover:border-[#29B6F6]'
-                  }`}
-                >
-                  <span className="w-2 h-2 rounded-full bg-[#0288D1]" />
-                  <span>{f}</span>
-                </button>
-              ))}
+            {/* 2. Optional Laser Marking / Clinic Name */}
+            <div className="p-4 rounded-2xl bg-[#f8fbfe] border border-gray-200 space-y-2 font-mono">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-[#195aa7]">
+                  2. Optional Laser Engraving (Free Clinic Personalization)
+                </label>
+                <span className="text-[10px] text-gray-400">Max 22 chars</span>
+              </div>
+              <input
+                type="text"
+                value={customEngraving}
+                onChange={(e) => setCustomEngraving(e.target.value)}
+                placeholder="e.g. ST. JUDE OR-4 / DR. VANCE"
+                maxLength={22}
+                className="w-full p-3 text-xs rounded-xl border border-gray-300 bg-white focus:bg-white text-[#195aa7] font-mono uppercase focus:border-[#195aa7] focus:outline-none"
+              />
             </div>
-          </div>
 
-          {/* Optional Laser Marking Customizer */}
-          <div className="p-4 rounded-2xl bg-white border border-[#B3E5FC] space-y-2 font-mono shadow-sm">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-[#0B2838]">
-                2. Custom Laser Marking (Free for Clinics & Importers)
-              </label>
-              <span className="text-[10px] text-[#62879F]">Max 20 chars</span>
-            </div>
-            <input
-              type="text"
-              value={customEngraving}
-              onChange={(e) => setCustomEngraving(e.target.value)}
-              placeholder="e.g. ST. MARY HOSPITAL / OR-ROOM 4"
-              maxLength={20}
-              className="w-full p-2.5 text-xs rounded-xl border border-[#B3E5FC] bg-[#F4FAFD] focus:bg-white text-[#0B2838] font-mono uppercase focus:border-[#0288D1] focus:outline-none"
-            />
-          </div>
+            {/* 3. Quantity & Instant Purchasing Buttons */}
+            <div className="space-y-4 pt-2 font-mono">
+              <div className="flex items-center gap-3">
+                {/* Quantity Counter */}
+                <div className="flex items-center border-2 border-gray-200 rounded-2xl bg-white overflow-hidden shadow-xs">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-4 py-3.5 text-gray-600 hover:bg-[#f4f8fc] font-bold text-sm"
+                  >
+                    -
+                  </button>
+                  <span className="px-5 py-3.5 font-mono font-black text-sm text-[#195aa7]">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="px-4 py-3.5 text-gray-600 hover:bg-[#f4f8fc] font-bold text-sm"
+                  >
+                    +
+                  </button>
+                </div>
 
-          {/* Quantity & Purchasing CTA Buttons */}
-          <div className="space-y-3 pt-2 font-mono">
-            <div className="flex items-center gap-3">
-              {/* Quantity Counter */}
-              <div className="flex items-center border border-[#B3E5FC] rounded-xl bg-white">
+                {/* Primary Add to Cart Button */}
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3.5 py-3 text-[#355C75] hover:bg-[#F0F9FF] font-bold rounded-l-xl"
+                  onClick={handleAddToCart}
+                  className="flex-1 py-4 px-6 rounded-2xl bg-[#eb5d0b] hover:bg-[#d65106] text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-xl shadow-[#eb5d0b]/30 active:scale-95"
                 >
-                  -
-                </button>
-                <span className="px-4 py-3 font-mono font-bold text-xs text-[#0B2838]">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3.5 py-3 text-[#355C75] hover:bg-[#F0F9FF] font-bold rounded-r-xl"
-                >
-                  +
+                  {addedToast ? (
+                    <>
+                      <Check className="w-5 h-5 text-white" /> Added to Shopping Cart!
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-5 h-5 text-white" /> Add to Cart (${(product.price * quantity).toFixed(2)})
+                    </>
+                  )}
                 </button>
               </div>
 
-              {/* Add to Cart (B2C) */}
+              {/* Express 1-Click Buy Now */}
               <button
-                onClick={handleAddToCart}
-                className="flex-1 py-3.5 px-6 rounded-xl bg-[#0288D1] hover:bg-[#0277BD] text-white font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-md shadow-[#0288D1]/25"
+                onClick={handleBuyNow}
+                className="w-full py-3.5 px-4 rounded-2xl bg-[#195aa7] hover:bg-[#12437e] text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md active:scale-95"
               >
-                {addedToast ? (
-                  <>
-                    <Check className="w-4 h-4 text-[#B3E5FC]" /> Added to Shopping Cart!
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4 text-[#B3E5FC]" /> Add to Cart (${(product.price * quantity).toFixed(2)})
-                  </>
-                )}
+                <Lock className="w-4 h-4 text-[#1ab8ec]" />
+                <span>Buy Now (Instant Express Checkout)</span>
               </button>
             </div>
 
-            {/* B2B Institutional Quote Button */}
-            <button
-              onClick={() => onOpenRFQ(product)}
-              className="w-full py-3 px-6 rounded-xl bg-white hover:bg-[#F0F9FF] border border-[#B3E5FC] text-[#0B2838] font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 uppercase tracking-wider shadow-xs"
-            >
-              <FileText className="w-4 h-4 text-[#0288D1]" />
-              Request B2B Bulk Order Quote (Tier Discounts)
-            </button>
-          </div>
+            {/* Guarantees & Shipping Badges */}
+            <div className="pt-4 border-t border-gray-100 grid grid-cols-3 gap-2 text-center text-[11px] font-mono text-gray-500">
+              <div className="space-y-1">
+                <Truck className="w-4 h-4 text-[#1ab8ec] mx-auto" />
+                <p className="font-bold text-[#195aa7]">DHL Express</p>
+                <p className="text-[10px]">Tracked Air Dispatch</p>
+              </div>
 
-          {/* Technical Specifications Matrix */}
-          <div className="space-y-3 pt-4 border-t border-[#B3E5FC] font-mono">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#355C75]">
-              Technical Specifications Table
-            </h3>
+              <div className="space-y-1">
+                <ShieldCheck className="w-4 h-4 text-[#eb5d0b] mx-auto" />
+                <p className="font-bold text-[#195aa7]">30-Day Return</p>
+                <p className="text-[10px]">Money-Back Trial</p>
+              </div>
 
-            <div className="overflow-hidden border border-[#B3E5FC] rounded-2xl bg-white shadow-xs">
-              <table className="w-full text-xs">
-                <tbody className="divide-y divide-[#B3E5FC]/60">
-                  <tr className="bg-[#F4FAFD]">
-                    <td className="p-2.5 font-bold text-[#62879F] w-1/3">Standard Code</td>
-                    <td className="p-2.5 font-mono text-[#0288D1] font-bold">{product.code}</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2.5 font-bold text-[#62879F]">Material Grade</td>
-                    <td className="p-2.5 text-[#0B2838]">{product.material}</td>
-                  </tr>
-                  <tr className="bg-[#F4FAFD]">
-                    <td className="p-2.5 font-bold text-[#62879F]">Rockwell Hardness</td>
-                    <td className="p-2.5 font-mono text-[#0B2838]">{product.hardness}</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2.5 font-bold text-[#62879F]">Total Length</td>
-                    <td className="p-2.5 text-[#0B2838]">{product.size}</td>
-                  </tr>
-                  <tr className="bg-[#F4FAFD]">
-                    <td className="p-2.5 font-bold text-[#62879F]">Tip / Jaw Geometry</td>
-                    <td className="p-2.5 text-[#0B2838]">{product.tipType}</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2.5 font-bold text-[#62879F]">Autoclave Sterility</td>
-                    <td className="p-2.5 text-[#355C75]">134°C (273°F) for 1,000+ cycles</td>
-                  </tr>
-                  <tr className="bg-[#F4FAFD]">
-                    <td className="p-2.5 font-bold text-[#62879F]">Manufacturing Origin</td>
-                    <td className="p-2.5 text-[#0B2838]">Sialkot, Pakistan (ISO 13485 Space)</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="space-y-1">
+                <Award className="w-4 h-4 text-[#1ab8ec] mx-auto" />
+                <p className="font-bold text-[#195aa7]">Autoclavable</p>
+                <p className="text-[10px]">DIN EN ISO 13485</p>
+              </div>
             </div>
+
           </div>
+
         </div>
+
       </div>
 
-      {/* Related Products Section */}
-      {relatedProducts.length > 0 && (
-        <div className="pt-8 border-t border-[#B3E5FC] space-y-6">
-          <div className="flex items-center justify-between font-mono">
-            <h3 className="text-base font-bold uppercase tracking-wider text-[#0B2838]">
-              Related Instruments in {product.category}
-            </h3>
+      {/* Technical Specifications & Verified Reviews Tabs */}
+      <div className="bg-white rounded-3xl p-8 sm:p-10 border border-gray-200 shadow-sm space-y-8">
+        
+        {/* Tab Headers */}
+        <div className="flex border-b border-gray-200 gap-8 font-mono text-sm">
+          <button
+            onClick={() => setActiveTab('specs')}
+            className={`pb-4 font-bold border-b-2 transition-all ${
+              activeTab === 'specs'
+                ? 'border-[#eb5d0b] text-[#eb5d0b]'
+                : 'border-transparent text-gray-500 hover:text-[#195aa7]'
+            }`}
+          >
+            Clinical Specifications
+          </button>
+
+          <button
+            onClick={() => setActiveTab('metallurgy')}
+            className={`pb-4 font-bold border-b-2 transition-all ${
+              activeTab === 'metallurgy'
+                ? 'border-[#eb5d0b] text-[#eb5d0b]'
+                : 'border-transparent text-gray-500 hover:text-[#195aa7]'
+            }`}
+          >
+            German Steel Metallurgy & Heat Treat
+          </button>
+
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`pb-4 font-bold border-b-2 transition-all ${
+              activeTab === 'reviews'
+                ? 'border-[#eb5d0b] text-[#eb5d0b]'
+                : 'border-transparent text-gray-500 hover:text-[#195aa7]'
+            }`}
+          >
+            Verified Practitioner Reviews ({product.reviewCount})
+          </button>
+        </div>
+
+        {/* Tab 1: Specs */}
+        {activeTab === 'specs' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-mono text-xs">
+            <div className="space-y-3">
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Catalog SKU / Code:</span>
+                <span className="font-bold text-[#195aa7]">{product.code}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Specialty Category:</span>
+                <span className="font-bold text-[#195aa7]">{product.category}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Sub-Specialty:</span>
+                <span className="font-bold text-[#195aa7]">{product.subCategory}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Overall Length / Size:</span>
+                <span className="font-bold text-[#195aa7]">{product.size}</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Tip / Jaw Geometry:</span>
+                <span className="font-bold text-[#195aa7]">{product.tipType}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Jaw Pattern:</span>
+                <span className="font-bold text-[#195aa7]">{product.jawType}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Autoclave Sterilization:</span>
+                <span className="font-bold text-emerald-600">100% Steam up to 134°C (273°F)</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-500">Country of Manufacture:</span>
+                <span className="font-bold text-[#195aa7]">Sialkot, Pakistan (Master Forged)</span>
+              </div>
+            </div>
           </div>
+        )}
+
+        {/* Tab 2: Metallurgy */}
+        {activeTab === 'metallurgy' && (
+          <div className="space-y-4 text-sm text-gray-700 leading-relaxed font-mono">
+            <div className="p-5 rounded-2xl bg-[#f8fbfe] border border-gray-200">
+              <h4 className="font-bold text-[#195aa7] mb-2">Alloy Composition: {product.material}</h4>
+              <p className="text-xs text-gray-600">
+                Conforms strictly to ASTM F899-20 and DIN EN ISO 7153-1 (Surgical Instruments - Metallic Materials). Tempered in controlled vacuum furnaces to achieve hardness ratings of {product.hardness}.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+              <div className="p-4 rounded-xl border border-gray-200">
+                <span className="text-gray-400 block mb-1">Hardness (Rockwell C):</span>
+                <span className="font-black text-[#195aa7] text-base">{product.hardness}</span>
+              </div>
+              <div className="p-4 rounded-xl border border-gray-200">
+                <span className="text-gray-400 block mb-1">Corrosion Resistance:</span>
+                <span className="font-black text-emerald-600 text-base">Passivated Boil-Tested</span>
+              </div>
+              <div className="p-4 rounded-xl border border-gray-200">
+                <span className="text-gray-400 block mb-1">Biocompatibility:</span>
+                <span className="font-black text-[#195aa7] text-base">ISO 10993-1 Verified</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Reviews */}
+        {activeTab === 'reviews' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl font-black text-[#195aa7] font-mono">{product.rating}</span>
+                <div>
+                  <div className="flex text-amber-500 text-sm">{'★★★★★'}</div>
+                  <span className="text-xs text-gray-500 font-mono">Based on {product.reviewCount} surgeon reviews</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t border-gray-100">
+              <div className="p-5 rounded-2xl bg-[#f8fbfe] border border-gray-200 space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-[#195aa7]">Dr. Raymond S. • Chief of Surgery</span>
+                  <span className="text-emerald-600 font-bold">Verified Buyer</span>
+                </div>
+                <div className="flex text-amber-500 text-xs">{'★★★★★'}</div>
+                <p className="text-xs text-gray-600 leading-relaxed font-sans">
+                  "Superb weight and balance. The spring tension is consistent and the box-lock operates with zero wobble. Excellent online ordering experience with prompt DHL delivery."
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#f8fbfe] border border-gray-200 space-y-2">
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-bold text-[#195aa7]">Dr. Sarah K. • Ambulatory Surgical Center</span>
+                  <span className="text-emerald-600 font-bold">Verified Buyer</span>
+                </div>
+                <div className="flex text-amber-500 text-xs">{'★★★★★'}</div>
+                <p className="text-xs text-gray-600 leading-relaxed font-sans">
+                  "We purchased 12 units for our outpatient clinic. Tested through 40+ autoclave cycles at 134°C with zero staining. Will certainly order again."
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* Related Surgical Tools */}
+      {relatedProducts.length > 0 && (
+        <div className="space-y-6">
+          <h3 className="text-2xl font-black text-[#195aa7] tracking-tight">
+            Frequently Bought Together
+          </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {relatedProducts.map((rel) => (
               <div
                 key={rel.id}
                 onClick={() => onNavigateToProduct(rel.id)}
-                className="p-4 rounded-2xl bg-white border border-[#B3E5FC] hover:border-[#0288D1] cursor-pointer transition-all flex items-center gap-4 group shadow-sm hover:shadow-md"
+                className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-[#1ab8ec] shadow-sm hover:shadow-xl transition-all cursor-pointer group flex flex-col justify-between"
               >
-                <img
-                  src={rel.images[0]}
-                  alt={rel.name}
-                  className="w-16 h-16 object-contain bg-[#F4FAFD] rounded-xl border border-[#B3E5FC] p-1 shrink-0 group-hover:scale-105 transition-transform"
-                />
-                <div className="font-mono">
-                  <span className="text-[10px] font-bold text-[#01579B] bg-[#E1F5FE] px-2 py-0.5 rounded-md border border-[#81D4FA]">
-                    {rel.code}
-                  </span>
-                  <h4 className="text-xs font-bold text-[#0B2838] group-hover:text-[#0288D1] transition-colors line-clamp-1 mt-1 font-sans">
+                <div>
+                  <div className="aspect-square rounded-2xl bg-[#f8fbfe] p-4 flex items-center justify-center mb-4">
+                    <img src={rel.images[0]} alt={rel.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-[#eb5d0b]">{rel.code}</span>
+                  <h4 className="text-sm font-bold text-[#195aa7] group-hover:text-[#eb5d0b] line-clamp-1 mt-1">
                     {rel.name}
                   </h4>
-                  <div className="text-xs font-bold text-[#0288D1] mt-1">${rel.price.toFixed(2)}</div>
+                </div>
+
+                <div className="flex items-baseline justify-between pt-4 mt-4 border-t border-gray-100 font-mono">
+                  <span className="text-base font-black text-[#195aa7]">${rel.price.toFixed(2)}</span>
+                  <span className="text-xs text-[#eb5d0b] font-bold">View Specs →</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
       )}
+
     </div>
   );
 };
