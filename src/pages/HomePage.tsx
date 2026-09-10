@@ -207,17 +207,17 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
                 <h2 className="font-black text-slate-900 text-base sm:text-lg md:text-xl uppercase tracking-wide">
-                  Online E-Commerce Store
+                  MEDTREND® Online Surgical Store
                 </h2>
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-mono font-bold">
-                  Up To 45% OFF
+                  Up To 45% Direct Savings
                 </span>
                 <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-[#195aa7]/10 text-[#195aa7] text-xs font-mono font-bold">
-                  Express 24h Dispatch
+                  Fast Dispatch: USA, EU & GCC
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                Hospital-grade German stainless steel instruments. Direct factory pricing with live instant cart ordering.
+                <strong className="text-[#195aa7] font-semibold">Medtrend Pvt. Ltd.</strong> • Precision You Can Trust. Professionally crafted in Sialkot, Pakistan from German-forged stainless steel. Instant online ordering.
               </p>
             </div>
           </div>
@@ -426,13 +426,13 @@ export const HomePage: React.FC<HomePageProps> = ({
           
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-mono font-black uppercase tracking-widest text-[#eb5d0b]">
-              Direct-To-Clinic E-Commerce
+              Direct E-Commerce Retail
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#195aa7] tracking-tight">
-              Why Surgeons & Clinics Order Direct
+              Why Surgeons & Clinics Order Direct from MEDTREND®
             </h2>
             <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-              Skip traditional surgical supply middlemen. Get hand-forged German stainless steel instruments delivered directly to your operating room with ironclad guarantees.
+              Skip traditional medical supply markups. Medtrend Pvt. Ltd. delivers professionally crafted surgical instruments from Sialkot, Pakistan directly to operating rooms, clinics, and practitioners in the USA, EU, GCC, and worldwide.
             </p>
           </div>
 
@@ -441,9 +441,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-[#eb5d0b]/10 text-[#eb5d0b] flex items-center justify-center">
                 <Tag className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#195aa7]">Factory-Direct Savings</h3>
+              <h3 className="text-lg font-bold text-[#195aa7]">Transparent Online Pricing</h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Save up to 45% compared to conventional hospital distributors. Transparent online pricing on every SKU.
+                Save up to 45% compared to conventional hospital distributors. Instant checkout with zero hidden broker fees.
               </p>
             </div>
 
@@ -451,9 +451,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-[#1ab8ec]/20 text-[#195aa7] flex items-center justify-center">
                 <Truck className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#195aa7]">24-48h Global Dispatch</h3>
+              <h3 className="text-lg font-bold text-[#195aa7]">USA, EU & GCC Express</h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Every in-stock order is packed in sterile shockproof foam and shipped via DHL/FedEx with real-time tracking.
+                24–48 hour dispatch via tracked DHL/FedEx air courier. Secure sterile packaging guaranteed to arrive undamaged.
               </p>
             </div>
 
@@ -463,7 +463,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <h3 className="text-lg font-bold text-[#195aa7]">30-Day Risk-Free Trial</h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Test the balance and grip in your clinic. If you're not 100% satisfied, return it for a complete refund.
+                Test the balance, tactile feedback, and grip in your practice. If you are not 100% satisfied, return for a full refund.
               </p>
             </div>
 
@@ -471,9 +471,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-[#1ab8ec]/20 text-[#195aa7] flex items-center justify-center">
                 <Award className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-[#195aa7]">100% Autoclavable (134°C)</h3>
+              <h3 className="text-lg font-bold text-[#195aa7]">Precision You Can Trust</h3>
               <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                Conforms to DIN EN ISO 13485:2016 and ASTM F899 standards with zero corrosion across 200+ autoclave cycles.
+                100% steam autoclavable (134°C). Manufactured to DIN EN ISO 13485:2016 and ASTM F899 standards with a 5-year warranty.
               </p>
             </div>
           </div>

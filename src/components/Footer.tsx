@@ -50,8 +50,8 @@ export const Footer: React.FC<FooterProps> = ({
               <Package className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">OEM & Hospital Kits</p>
-              <p className="text-xs text-[#1ab8ec] font-mono">Custom Laser Engraving</p>
+              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">Direct Online Store</p>
+              <p className="text-xs text-[#1ab8ec] font-mono">USA, EU & GCC Delivery</p>
             </div>
           </div>
 
@@ -83,21 +83,21 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             <p className="text-xs sm:text-sm text-white/85 leading-relaxed max-w-sm font-sans">
-              Precision surgical instruments crafted in Sialkot, Pakistan for international healthcare systems, surgical teams, hospital procurement, and global medical distributors across USA, Europe, and worldwide.
+              <strong className="text-white font-semibold">Medtrend Pvt. Ltd.</strong> is a Pakistan-based surgical and medical instruments brand focused on manufacturing and supplying professionally crafted instruments from Sialkot, Pakistan. Direct online ordering for healthcare professionals in USA, European Union, GCC, and worldwide.
             </p>
 
             <div className="space-y-2 text-white/95 text-xs sm:text-sm pt-1 font-mono">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#eb5d0b] shrink-0 mt-0.5" />
-                <span><strong>HQ & Factory:</strong> {company.hqAddress}</span>
+                <span><strong>HQ & Manufacturing:</strong> Sialkot Industrial Estate, Sialkot 51310, Punjab, Pakistan</span>
               </div>
               <div className="flex items-start gap-2">
                 <Globe className="w-4 h-4 text-[#1ab8ec] shrink-0 mt-0.5" />
-                <span><strong>USA Hub:</strong> {company.internationalOffice}</span>
+                <span><strong>Markets:</strong> USA, European Union, GCC & Worldwide</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#1ab8ec] shrink-0" />
-                <span>{company.primaryEmail} (Quotes: {company.rfqEmail})</span>
+                <span>info@medtrendsurgical.com • orders@medtrendsurgical.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#eb5d0b] shrink-0" />
@@ -190,38 +190,41 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
             </ul>
 
-            {/* GerMedUSA B2B Technical Bulletin */}
+            {/* VIP E-Commerce Bulletin */}
             <div className="pt-2">
               <p className="text-xs text-white/80 font-mono uppercase tracking-wider mb-1.5">
-                Hospital Procurement Bulletin:
+                Surgeon VIP Privilege Bulletin:
               </p>
               <div className="flex">
                 <input
                   type="email"
-                  placeholder="hospital@domain.com"
-                  aria-label="Hospital Procurement Bulletin Email"
+                  placeholder="surgeon@clinic.com"
+                  aria-label="Surgeon VIP Bulletin Email"
                   className="w-full bg-white/10 border border-white/20 rounded-l-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#1ab8ec] font-mono"
                 />
                 <button 
-                  aria-label="Subscribe to Hospital Procurement Bulletin"
+                  aria-label="Subscribe to Surgeon VIP Bulletin"
                   className="bg-[#eb5d0b] hover:bg-[#d65106] text-white px-3.5 py-2 rounded-r-xl font-bold text-xs sm:text-sm uppercase tracking-wider transition-colors shadow-md">
                   Join
                 </button>
               </div>
+              <p className="text-[11px] text-[#1ab8ec] font-mono mt-1">Get 15% off code + product release alerts</p>
             </div>
           </div>
 
         </div>
 
-        {/* Regulatory Notice per GerMedUSA and Duckworth & Kent */}
+        {/* Regulatory Notice & Legal Identity */}
         <div className="mt-8 pt-6 border-t border-white/15 text-xs sm:text-[13px] text-white/80 leading-relaxed">
           <p className="mb-2">
-            <strong className="text-white font-bold">Regulatory & Compliance Mandate:</strong> {company.companyName} is registered under DIN EN ISO 13485:2016 for the design, drop-forging, CNC machining, passivation, and supply of reusable surgical, dental, and orthopedic instruments. Stainless steel alloys conform strictly to ASTM F899 (AISI 420A/420B/440A) and titanium products utilize biocompatible Ti-6Al-4V ELI (ASTM F136). CE Class I & IIa declarations of conformity are provided for institutional tenders.
+            <strong className="text-white font-bold">Regulatory & Quality Standard:</strong> Medtrend Pvt. Ltd. manufactures and supplies reusable surgical, dental, and orthopedic instruments adhering to DIN EN ISO 13485:2016 quality management systems. Surgical stainless steel alloys conform to ASTM F899 (AISI 410, 420, 440) and biocompatible titanium (Ti-6Al-4V ELI). All instruments are 100% steam autoclavable at 134°C and CE compliant.
           </p>
           <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10 text-xs uppercase tracking-wider text-[#1ab8ec] font-mono">
-            <div>Global Status: <span className="text-white font-bold">Operational // Active Air Freight</span></div>
-            <div>© {new Date().getFullYear()} {company.companyName}</div>
-            <div>Manufacturing Base: Sialkot, PK</div>
+            <div>Consumer Brand: <span className="text-white font-bold">MEDTREND®</span></div>
+            <div>Legal Name: <span className="text-white font-bold">Medtrend Pvt. Ltd.</span></div>
+            <div>Promise: <span className="text-[#eb5d0b] font-bold">Precision You Can Trust.</span></div>
+            <div>Manufacturing: <span className="text-white font-bold">Sialkot, Pakistan</span></div>
+            <div>Markets: <span className="text-white font-bold">USA • EU • GCC</span></div>
           </div>
         </div>
 

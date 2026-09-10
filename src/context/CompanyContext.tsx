@@ -19,16 +19,16 @@ export interface CompanyInfo {
 }
 
 export const defaultCompanyInfo: CompanyInfo = {
-  companyName: 'MEDTREND® Surgical Technologies',
+  companyName: 'Medtrend Pvt. Ltd.',
   shortName: 'MEDTREND®',
-  brandTagline: 'Precision Titanium & German-Grade Surgical Instruments',
+  brandTagline: 'Precision You Can Trust.',
   primaryPhone: '+92 (52) 429-1800',
   tollFreePhone: '+1 (800) 555-0199',
   whatsappNumber: '+92 300 1234567',
   primaryEmail: 'info@medtrendsurgical.com',
-  rfqEmail: 'rfq@medtrendsurgical.com',
+  rfqEmail: 'orders@medtrendsurgical.com',
   hqAddress: 'Sialkot Industrial Estate, Sialkot 51310, Punjab, Pakistan',
-  internationalOffice: 'GerMed Hub: 12000 Aerospace Ave, Houston, TX 77034, USA',
+  internationalOffice: 'USA, European Union & GCC Direct Fulfillment Hubs',
   workingHours: 'Mon – Sat: 8:00 AM – 6:30 PM (GMT+5)',
   isoCertification: 'ISO 13485:2016 Certified QMS',
   ceRegistration: 'CE Class I & IIa Compliant (MDR 2017/745)',
