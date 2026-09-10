@@ -1,23 +1,22 @@
 import React from 'react';
 import { 
   ShieldCheck, MapPin, Mail, Phone, Globe, Download, 
-  ExternalLink, ArrowRight, CheckCircle2, Lock, Package, FileText, Settings, Award
+  ExternalLink, ArrowRight, CheckCircle2, Lock, Package, FileText, Award
 } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
 import { CATEGORIES_TREE } from '../data/productsData';
 
 interface FooterProps {
   onNavigate: (tab: string, productId?: string, categorySlug?: string) => void;
-  onOpenFolderGuide: () => void;
+  onOpenFolderGuide?: () => void;
   onOpenRFQ: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onNavigate,
-  onOpenFolderGuide,
   onOpenRFQ
 }) => {
-  const { company, setIsDevModalOpen } = useCompany();
+  const { company } = useCompany();
 
   return (
     <footer className="bg-[#195aa7] text-white text-xs border-t-4 border-[#eb5d0b]">
@@ -26,43 +25,43 @@ export const Footer: React.FC<FooterProps> = ({
       <div className="border-b border-white/15 bg-[#12437e] py-6 px-6 sm:px-10 lg:px-14 xl:px-16">
         <div className="max-w-[1480px] mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
           
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
+          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-11 h-11 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-white text-xs tracking-tight">Sialkot Metallurgy</p>
-              <p className="text-[10px] text-[#1ab8ec] font-mono">German DIN & ASTM F899</p>
+              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">Sialkot Metallurgy</p>
+              <p className="text-xs text-[#1ab8ec] font-mono">German DIN & ASTM F899</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
+          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-11 h-11 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
               <Award className="w-5 h-5 font-black" />
             </div>
             <div>
-              <p className="font-bold text-white text-xs tracking-tight">{company.isoCertification.split(' ')[0] || 'ISO 13485'}</p>
-              <p className="text-[10px] text-white/80 font-mono">CE & FDA Registered</p>
+              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">{company.isoCertification.split(' ')[0] || 'ISO 13485'}</p>
+              <p className="text-xs text-white/90 font-mono">CE & FDA Registered</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
+          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-11 h-11 rounded-xl bg-[#eb5d0b] flex items-center justify-center text-white shrink-0 shadow-md">
               <Package className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-white text-xs tracking-tight">OEM & Hospital Kits</p>
-              <p className="text-[10px] text-[#1ab8ec] font-mono">Custom Laser Engraving</p>
+              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">OEM & Hospital Kits</p>
+              <p className="text-xs text-[#1ab8ec] font-mono">Custom Laser Engraving</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
+          <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1ab8ec] transition-colors">
+            <div className="w-11 h-11 rounded-xl bg-[#1ab8ec] flex items-center justify-center text-[#195aa7] shrink-0 shadow-md">
               <Lock className="w-5 h-5" />
             </div>
             <div>
-              <p className="font-bold text-white text-xs tracking-tight">100% Autoclavable</p>
-              <p className="text-[10px] text-white/80 font-mono">Steam Tested to 134°C</p>
+              <p className="font-bold text-white text-xs sm:text-sm tracking-tight">100% Autoclavable</p>
+              <p className="text-xs text-white/90 font-mono">Steam Tested to 134°C</p>
             </div>
           </div>
 
@@ -75,19 +74,19 @@ export const Footer: React.FC<FooterProps> = ({
           
           {/* Brand Info & Live Details */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="inline-block bg-white px-3.5 py-2 rounded-xl shadow-md">
+            <div className="inline-block bg-white px-4 py-2.5 rounded-xl shadow-md">
               <img
                 src="/medtrendlogo.jpg"
                 alt="MEDTREND Surgical Instruments"
-                className="h-8 sm:h-9 w-auto object-contain"
+                className="h-10 sm:h-12 w-auto max-w-[240px] sm:max-w-[280px] object-contain"
               />
             </div>
 
-            <p className="text-xs text-white/80 leading-relaxed max-w-sm font-sans">
+            <p className="text-xs sm:text-sm text-white/85 leading-relaxed max-w-sm font-sans">
               Precision surgical instruments crafted in Sialkot, Pakistan for international healthcare systems, surgical teams, hospital procurement, and global medical distributors across USA, Europe, and worldwide.
             </p>
 
-            <div className="space-y-2 text-white/90 text-xs pt-1 font-mono">
+            <div className="space-y-2 text-white/95 text-xs sm:text-sm pt-1 font-mono">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#eb5d0b] shrink-0 mt-0.5" />
                 <span><strong>HQ & Factory:</strong> {company.hqAddress}</span>
@@ -105,30 +104,19 @@ export const Footer: React.FC<FooterProps> = ({
                 <span>{company.primaryPhone} • Toll-Free: {company.tollFreePhone}</span>
               </div>
             </div>
-
-            {/* Quick Developer Mode Button */}
-            <div className="pt-2">
-              <button
-                onClick={() => setIsDevModalOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-[#eb5d0b] text-white text-xs font-mono font-bold transition-all border border-white/20"
-              >
-                <Settings className="w-3.5 h-3.5 text-[#1ab8ec]" />
-                <span>Developer Mode: Edit Info Across Website</span>
-              </button>
-            </div>
           </div>
 
           {/* Instrument Categories (GerMedUSA structure) */}
           <div className="space-y-3">
-            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#1ab8ec]">
               Specialties & Groups
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2 text-xs sm:text-sm">
               {CATEGORIES_TREE.map((cat) => (
                 <li key={cat.slug}>
                   <button
                     onClick={() => onNavigate('products', undefined, cat.slug)}
-                    className="text-white/80 hover:text-[#1ab8ec] hover:translate-x-1 transition-all text-left font-medium"
+                    className="text-white/85 hover:text-[#1ab8ec] hover:translate-x-1 transition-all text-left font-medium"
                   >
                     {cat.name}
                   </button>
@@ -137,7 +125,7 @@ export const Footer: React.FC<FooterProps> = ({
               <li>
                 <button
                   onClick={() => onNavigate('showcase-3d')}
-                  className="text-[#eb5d0b] hover:underline font-mono text-xs flex items-center gap-1 font-bold"
+                  className="text-[#eb5d0b] hover:underline font-mono text-xs sm:text-sm flex items-center gap-1 font-bold"
                 >
                   360° Inspection Lab →
                 </button>
@@ -147,10 +135,10 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Customer Support & Direct Shopping */}
           <div className="space-y-3">
-            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#1ab8ec]">
               Customer Care & Shopping
             </h4>
-            <ul className="space-y-2 text-xs text-white/80 font-medium">
+            <ul className="space-y-2 text-xs sm:text-sm text-white/85 font-medium">
               <li>
                 <button onClick={() => onNavigate('cart-checkout')} className="hover:text-white transition-colors">
                   Shopping Cart & Checkout
@@ -177,7 +165,7 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <span className="text-white/60">
+                <span className="text-white/70">
                   Free Express Shipping on $150+
                 </span>
               </li>
@@ -186,15 +174,10 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Regulatory & System Architecture */}
           <div className="space-y-3">
-            <h4 className="text-[11px] font-black uppercase tracking-widest text-[#1ab8ec]">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#1ab8ec]">
               System & Literature
             </h4>
-            <ul className="space-y-2 text-xs text-white/80 font-medium">
-              <li>
-                <button onClick={onOpenFolderGuide} className="text-[#1ab8ec] font-mono hover:underline font-bold flex items-center gap-1">
-                  Folder & Image Directory
-                </button>
-              </li>
+            <ul className="space-y-2 text-xs sm:text-sm text-white/85 font-medium">
               <li>
                 <button onClick={() => onNavigate('brand-guidelines')} className="hover:text-white transition-colors">
                   Brand Style Specifications
@@ -209,7 +192,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             {/* GerMedUSA B2B Technical Bulletin */}
             <div className="pt-2">
-              <p className="text-[10px] text-white/70 font-mono uppercase tracking-wider mb-1.5">
+              <p className="text-xs text-white/80 font-mono uppercase tracking-wider mb-1.5">
                 Hospital Procurement Bulletin:
               </p>
               <div className="flex">
@@ -217,11 +200,11 @@ export const Footer: React.FC<FooterProps> = ({
                   type="email"
                   placeholder="hospital@domain.com"
                   aria-label="Hospital Procurement Bulletin Email"
-                  className="w-full bg-white/10 border border-white/20 rounded-l-xl px-2.5 py-1.5 text-xs text-white placeholder-white/50 focus:outline-none focus:border-[#1ab8ec] font-mono"
+                  className="w-full bg-white/10 border border-white/20 rounded-l-xl px-3 py-2 text-xs sm:text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#1ab8ec] font-mono"
                 />
                 <button 
                   aria-label="Subscribe to Hospital Procurement Bulletin"
-                  className="bg-[#eb5d0b] hover:bg-[#d65106] text-white px-3 py-1.5 rounded-r-xl font-bold text-xs uppercase tracking-wider transition-colors shadow-md">
+                  className="bg-[#eb5d0b] hover:bg-[#d65106] text-white px-3.5 py-2 rounded-r-xl font-bold text-xs sm:text-sm uppercase tracking-wider transition-colors shadow-md">
                   Join
                 </button>
               </div>
@@ -231,11 +214,11 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Regulatory Notice per GerMedUSA and Duckworth & Kent */}
-        <div className="mt-8 pt-6 border-t border-white/15 text-[11px] text-white/70 leading-relaxed">
+        <div className="mt-8 pt-6 border-t border-white/15 text-xs sm:text-[13px] text-white/80 leading-relaxed">
           <p className="mb-2">
-            <strong className="text-white">Regulatory & Compliance Mandate:</strong> {company.companyName} is registered under DIN EN ISO 13485:2016 for the design, drop-forging, CNC machining, passivation, and supply of reusable surgical, dental, and orthopedic instruments. Stainless steel alloys conform strictly to ASTM F899 (AISI 420A/420B/440A) and titanium products utilize biocompatible Ti-6Al-4V ELI (ASTM F136). CE Class I & IIa declarations of conformity are provided for institutional tenders.
+            <strong className="text-white font-bold">Regulatory & Compliance Mandate:</strong> {company.companyName} is registered under DIN EN ISO 13485:2016 for the design, drop-forging, CNC machining, passivation, and supply of reusable surgical, dental, and orthopedic instruments. Stainless steel alloys conform strictly to ASTM F899 (AISI 420A/420B/440A) and titanium products utilize biocompatible Ti-6Al-4V ELI (ASTM F136). CE Class I & IIa declarations of conformity are provided for institutional tenders.
           </p>
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10 text-[10px] uppercase tracking-widest text-[#1ab8ec] font-mono">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/10 text-xs uppercase tracking-wider text-[#1ab8ec] font-mono">
             <div>Global Status: <span className="text-white font-bold">Operational // Active Air Freight</span></div>
             <div>© {new Date().getFullYear()} {company.companyName}</div>
             <div>Manufacturing Base: Sialkot, PK</div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Product, HeroSlide, CartItem } from './types';
 import { DEFAULT_HERO_SLIDES } from './data/brandData';
 import { PRODUCTS } from './data/productsData';
-import { CompanyProvider, useCompany } from './context/CompanyContext';
+import { CompanyProvider } from './context/CompanyContext';
 
 // Modals & Controls
 import { Navbar } from './components/Navbar';
@@ -12,9 +12,7 @@ import { DataSheetModal } from './components/DataSheetModal';
 import { RFQModal } from './components/RFQModal';
 import { FolderStructureModal } from './components/FolderStructureModal';
 import { ImageManagerModal } from './components/ImageManagerModal';
-import { DeveloperModeModal } from './components/DeveloperModeModal';
 import { CartDrawer } from './components/CartDrawer';
-import { Settings } from 'lucide-react';
 
 // Dedicated Separate Modular Pages
 import { HomePage } from './pages/HomePage';
@@ -30,7 +28,6 @@ import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { BrandGuidelinesPage } from './pages/BrandGuidelinesPage';
 
 function AppContent() {
-  const { setIsDevModalOpen } = useCompany();
   // Navigation Routing State
   const [activeTab, setActiveTab] = useState<string>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -297,20 +294,7 @@ function AppContent() {
         onOpenRFQ={() => handleOpenRFQ()}
       />
 
-      {/* Floating Developer Mode Quick Trigger */}
-      <button
-        onClick={() => setIsDevModalOpen(true)}
-        className="fixed bottom-5 right-5 z-40 bg-[#eb5d0b] hover:bg-[#d65106] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex items-center gap-2 font-mono font-bold text-xs border-2 border-white ring-4 ring-[#eb5d0b]/30 group"
-        title="Developer Mode: Edit company name, phones, emails & addresses across the entire site"
-      >
-        <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-        <span className="hidden sm:inline pr-1">Dev Mode Info</span>
-      </button>
-
       {/* MODALS */}
-      {/* 0. Developer Mode Info Synchronizer Modal */}
-      <DeveloperModeModal />
-
       {/* 0.1 Slide-over Cart Drawer */}
       <CartDrawer
         isOpen={isCartDrawerOpen}

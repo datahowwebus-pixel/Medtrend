@@ -75,84 +75,112 @@ export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     id: 1,
     folderReference: 'images/home/home-1.jpg',
     imageUrl: '/images/home/home-1.jpg',
-    categoryTag: 'General & Cardiovascular Surgery',
-    title: 'Precision Surgical Instruments',
-    subtitle: 'Made in Sialkot. Built for Professionals Worldwide.',
-    tagline: 'Precision You Can Trust.',
-    description: 'Engineered from German-forged AISI 420 stainless steel with Rockwell HRC 48-52 hardness. Serving surgeons, global hospital networks, and medical distributors in USA, EU & GCC.',
-    badge: 'German AISI 420 Steel • ISO 13485 & CE',
-    ctaText: 'Shop Instruments',
+    categoryTag: 'Direct Sialkot Forge Access',
+    title: 'We Not Only Sell, But Also MANUFACTURE Our Surgical Instruments',
+    subtitle: 'Direct German Stainless Steel Forge to Operating Room',
+    tagline: 'Direct Forge Pricing • Zero Middlemen',
+    description: 'Eliminate broker and distributor markups. Order precision surgical instruments engineered from medical-grade German AISI 420 martensitic steel directly from our master Sialkot forge with ISO 13485 & CE certification.',
+    badge: 'DIRECT FORGE MANUFACTURER • ISO 13485 & CE',
+    ctaText: 'Shop Surgical Instruments',
     ctaLink: '/products',
-    secondaryCtaText: 'Request B2B Quote',
-    secondaryCtaLink: '/b2b-wholesale',
+    secondaryCtaText: 'Explore Specialty Sets',
+    secondaryCtaLink: '/products',
     accentColor: '#0288D1',
-    previewCode: 'MT-HF-001',
+    previewCode: 'MT-HF-002',
     modelType: 'forceps',
     highlights: [
-      'Drop-forged AISI 420 surgical steel',
-      'ASTM A967 ultrasonic passivation',
-      '1,000+ steam autoclave cycles certified'
+      'Drop-forged German AISI 420 martensitic surgical steel',
+      'Direct forge pricing — Save up to 45% vs traditional distributors',
+      '100% steam autoclave compliant (134°C sterilization)'
     ],
     specsSummary: [
-      { label: 'Hardness', value: 'HRC 50 ± 2' },
+      { label: 'Hardness', value: 'HRC 54 ± 2' },
       { label: 'Tolerance', value: '±0.02 mm' },
-      { label: 'Air Transit', value: '2-4 Days SKT' }
+      { label: 'Dispatch', value: '24-48h DHL' }
     ]
   },
   {
     id: 2,
     folderReference: 'images/home/home-2.jpg',
     imageUrl: '/images/home/home-2.jpg',
-    categoryTag: 'Ophthalmic, Plastic & Micro-Surgery',
-    title: 'Tungsten Carbide Cutters & Dissectors',
-    subtitle: 'Ultra-Sharp Metzenbaum & Mayo Precision Cutting',
-    tagline: 'Crafted for Precision. Built for Care.',
-    description: 'Tungsten Carbide gold-ring inserts with diamond-lapped micro-serrations. Engineered for effortless tissue dissection without dragging or edge dulling.',
-    badge: 'Gold-Ring TC Inserts • 5x Edge Retention',
-    ctaText: 'Explore 3D CAD Lab',
-    ctaLink: '/showcase-3d',
-    secondaryCtaText: 'Download Spec Sheets',
-    secondaryCtaLink: '/catalog-datasheets',
-    accentColor: '#01579B',
+    categoryTag: 'Custom Modifications & OEM Blueprints',
+    title: 'Custom Surgical Instrument Manufacturing',
+    subtitle: 'Have an Instrument in Mind? Let\'s Start the Project.',
+    tagline: 'Bespoke Blueprints • Custom Curvatures & Jaws',
+    description: 'Need modified jaw angles, specialized micro tips, titanium alloys, or custom laser engraving? Our master instrument artisans bring your surgical concept from technical drawing to sterile OR deployment.',
+    badge: 'CUSTOM DESIGN & OEM • RAPID PROTOTYPING',
+    ctaText: 'Start Custom Project',
+    ctaLink: '/b2b-wholesale',
+    secondaryCtaText: 'Request Custom Quote',
+    secondaryCtaLink: '/b2b-wholesale',
+    accentColor: '#eb5d0b',
     previewCode: 'MT-SC-004',
     modelType: 'scissors',
     highlights: [
-      'Gold-plated ring handles denoting TC inserts',
-      'Micro-honed diamond lap cutting edge',
-      'Satin matte non-glare anti-reflective finish'
+      'Custom jaw angles, lengths, curvatures & micro tips',
+      'Complimentary high-precision fiber laser logo & serial marking',
+      'Rapid CAD technical prototyping & expedited sample dispatch'
     ],
     specsSummary: [
-      { label: 'Blade Insert', value: 'TC Carbide' },
-      { label: 'Sharpness', value: '5x Standard' },
-      { label: 'Hinge Pin', value: 'CNC Micro-Milled' }
+      { label: 'Custom CAD', value: '24-48 Hours' },
+      { label: 'Laser Etch', value: 'Complimentary' },
+      { label: 'Prototype MOQ', value: 'From 1 Unit' }
     ]
   },
   {
     id: 3,
     folderReference: 'images/home/home-3.jpg',
     imageUrl: '/images/home/home-3.jpg',
-    categoryTag: 'Hospitals, Distributors & Private Labels',
-    title: 'OEM & Hospital Wholesale Supply',
-    subtitle: 'Your Brand. Our Sialkot Precision Manufacturing.',
-    tagline: 'Engineering Surgical Precision',
-    description: 'Direct factory pricing for medical distributors and hospital procurement boards. Complimentary fiber laser logo etching, sterile packaging, and certified export compliance.',
-    badge: 'Direct Sialkot Supply • Free Laser Logo',
-    ctaText: 'B2B Quotation Portal',
-    ctaLink: '/b2b-wholesale',
-    secondaryCtaText: 'Brand Guidelines',
-    secondaryCtaLink: '/brand-guidelines',
-    accentColor: '#0288D1',
+    categoryTag: 'Cardiovascular • Orthopedic • Ophthalmic • ENT',
+    title: 'Over 15,000+ Specialty Surgical Instruments',
+    subtitle: 'Turnkey Procedure Trays for Operating Rooms & Clinics',
+    tagline: 'Precision You Can Trust In The OR',
+    description: 'Complete procedure instrument sets forged for cardiovascular, orthopedic trauma, spinal, microsurgery, and general surgery suites. Ergonomically balanced to eliminate surgeon hand fatigue.',
+    badge: '15,000+ SKUS • COMPLETE PROCEDURE TRAYS',
+    ctaText: 'View Specialty Sets',
+    ctaLink: '/products',
+    secondaryCtaText: 'Download Catalog (PDF)',
+    secondaryCtaLink: '/catalog-datasheets',
+    accentColor: '#1ab8ec',
+    previewCode: 'MT-TF-005',
+    modelType: 'forceps',
+    highlights: [
+      'Gold-ring Tungsten Carbide inlays for 5x extended cutting edge life',
+      'Atraumatic micro-serrations protecting delicate tissue and vasculature',
+      'Pre-configured hospital procedure trays ready to ship immediately'
+    ],
+    specsSummary: [
+      { label: 'Inlays', value: 'Tungsten Carbide' },
+      { label: 'Cycles', value: '1,000+ Autoclave' },
+      { label: 'Catalog SKUs', value: '15,000+ Ready' }
+    ]
+  },
+  {
+    id: 4,
+    folderReference: 'images/home/home-1.jpg',
+    imageUrl: '/images/home/home-1.jpg',
+    categoryTag: 'Uncompromising Quality & Standards',
+    title: '5-Year Warranty & Lifetime Guarantee Against Defects',
+    subtitle: 'Tested Under Real-World Surgical Rigor',
+    tagline: 'ASTM F899 Medical Metallurgy • 100% Passivated',
+    description: 'Every instrument undergoes 100% optical inspection, microscopic edge honing, ultrasonic passivation, and rigorous corrosion resistance validation according to ASTM F899 standards.',
+    badge: 'LIFETIME GUARANTEE • 100% PASSIVATED',
+    ctaText: 'Browse Best Sellers',
+    ctaLink: '/products',
+    secondaryCtaText: '360° Inspection Lab',
+    secondaryCtaLink: '/showcase-3d',
+    accentColor: '#059669',
     previewCode: 'MT-NH-012',
     modelType: 'needle_holder',
     highlights: [
-      'Free high-definition fiber laser logo marking',
-      'Custom GS1-128 barcoding & sterile packaging',
-      'Institutional tier discounts up to 50%'
+      'Calibrated Rockwell hardness HRC 54±2 for optimal elasticity & strength',
+      'Ultrasonic chemical passivation for lifetime corrosion immunity',
+      'Risk-free 30-day trial for hospital surgical committees'
     ],
     specsSummary: [
-      { label: 'B2B MOQ', value: '10 pcs/SKU' },
-      { label: 'Laser Logo', value: 'Complimentary' },
-      { label: 'Export Cert', value: 'EUR-1 & MDR' }
+      { label: 'Warranty', value: '5-Year & Lifetime' },
+      { label: 'Passivation', value: 'ASTM A967' },
+      { label: 'Returns', value: '30-Day Risk Free' }
     ]
   }
 ];
