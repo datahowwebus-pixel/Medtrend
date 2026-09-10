@@ -44,15 +44,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         p.subCategory.toLowerCase().includes(searchQuery.toLowerCase())
       ).slice(0, 6);
 
-  const navLinks = [
+  interface NavItem {
+    id: string;
+    label: string;
+    hasMegaMenu?: boolean;
+    isSpecial?: boolean;
+  }
+
+  const navLinks: NavItem[] = [
     { id: 'home', label: 'Home' },
-    { id: 'products', label: 'Shop All Instruments', hasMegaMenu: true },
-    { id: 'showcase-3d', label: '360° Inspection Lab', isSpecial: true },
-    { id: 'about', label: 'Sialkot Craftsmanship' },
-    { id: 'quality-certifications', label: 'ISO 13485 Quality' },
-    { id: 'order-tracking', label: 'Track My Order' },
-    { id: 'catalog-datasheets', label: 'Spec Sheets & TDS' },
-    { id: 'brand-guidelines', label: 'Asset Specs' }
+    { id: 'products', label: 'Shop All Instruments', hasMegaMenu: true }
   ];
 
   return (
