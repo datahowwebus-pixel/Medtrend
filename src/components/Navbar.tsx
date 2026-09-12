@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { 
   Search, ShoppingBag, Sparkles, Layers, 
-  Menu, X, ChevronDown, ShieldCheck, Globe, Phone, Mail, FileText, ArrowRight, Clock
+  Menu, X, ChevronDown, ShieldCheck, Globe, Phone, Mail, FileText, ArrowRight, Clock, Palette
 } from 'lucide-react';
 import { useCompany } from '../context/CompanyContext';
+import { useTheme } from '../context/ThemeContext';
 import { CATEGORIES_TREE, PRODUCTS } from '../data/productsData';
 
 interface NavbarProps {
@@ -29,6 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onCurrencyChange
 }) => {
   const { company } = useCompany();
+  const { toggleDevMode } = useTheme();
   const current = activeTab || currentTab || 'home';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,6 +85,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right: Currency Selector & Quick Utility */}
           <div className="flex items-center gap-2.5 sm:gap-3.5 ml-auto">
+            {/* Developer Mode Colors Quick Trigger */}
+            <button
+              onClick={() => toggleDevMode()}
+              className="flex items-center gap-1.5 bg-white/15 hover:bg-white text-white hover:text-slate-900 px-2.5 py-1 rounded border border-white/25 text-xs font-mono font-bold transition-all cursor-pointer shadow-xs"
+              title="Developer Mode: Live Color Studio (تمام رنگ تبدیل کریں)"
+            >
+              <Palette className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">Dev Colors</span>
+              <span className="sm:hidden">Colors</span>
+            </button>
+
             {/* Currency Selector */}
             <div className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded border border-white/20">
               <Globe className="w-3.5 h-3.5 text-[#1ab8ec]" />

@@ -3,6 +3,7 @@ import { Product, HeroSlide, CartItem } from './types';
 import { DEFAULT_HERO_SLIDES } from './data/brandData';
 import { PRODUCTS } from './data/productsData';
 import { CompanyProvider } from './context/CompanyContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Modals & Controls
 import { Navbar } from './components/Navbar';
@@ -13,6 +14,7 @@ import { RFQModal } from './components/RFQModal';
 import { FolderStructureModal } from './components/FolderStructureModal';
 import { ImageManagerModal } from './components/ImageManagerModal';
 import { CartDrawer } from './components/CartDrawer';
+import { DeveloperColorStudio } from './components/DeveloperColorStudio';
 
 // Dedicated Separate Modular Pages
 import { HomePage } from './pages/HomePage';
@@ -369,14 +371,19 @@ function AppContent() {
         onClose={() => setIsImageManagerOpen(false)}
         onUpdateSlide={handleUpdateHeroSlides}
       />
+
+      {/* 6. Live Developer Mode: Color Studio */}
+      <DeveloperColorStudio />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <CompanyProvider>
-      <AppContent />
-    </CompanyProvider>
+    <ThemeProvider>
+      <CompanyProvider>
+        <AppContent />
+      </CompanyProvider>
+    </ThemeProvider>
   );
 }
